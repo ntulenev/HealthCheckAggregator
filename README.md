@@ -81,7 +81,7 @@ graph LR
 | Parameter        | Value               | Description                                          |
 |------------------|---------------------|------------------------------------------------------|
 | `recipient_url`  | `https://target`    | The address to which the HTTP POST message will be sent. |
-| `interval`       | `00:00:15.000`      | The time interval between sending messages. In this case, a message will be sent every 15 seconds. |
+| `interval`       | `00:00:15.000`      | The time interval between sending messages.|
 | `timeout`        | `00:00:05.000`       | The maximum waiting time for a response from the server after sending the message.|
 
 ```json
