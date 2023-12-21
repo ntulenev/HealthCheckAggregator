@@ -41,3 +41,37 @@ graph LR
   }
 }
 ```
+### Recources configuration
+
+| Field         | Description                                                                         |
+| ------------- | ----------------------------------------------------------------------------------- |
+| name          | The name of the resource or service to be checked.                                   |
+| url           | The URL where the health check request should be made.                              |
+| crawlInterval | The time interval between health check requests.|
+| statusTimeout | The maximum time to wait for a response when requesting the status.|
+
+
+```json
+{
+  "resources": [
+    {
+      "name": "Resource A",
+      "url": "http://exampleA.com/hc",
+      "crawlInterval": "00:30:00.000",  
+      "statusTimeout": "00:00:10.000"   
+    },
+    {
+      "name": "Resource B",
+      "url": "http://exampleB.com/hc",
+      "crawlInterval": "00:15:00.000", 
+      "statusTimeout": "00:00:15.000"  
+    },
+    {
+      "name": "Resource C",
+      "url": "http://exampleC.com/hc",
+      "crawlInterval": "00:01:00.000",  
+      "statusTimeout": "00:00:20.000"
+    }
+  ]
+}
+```
