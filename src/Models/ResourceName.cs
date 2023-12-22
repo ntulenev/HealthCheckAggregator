@@ -14,7 +14,7 @@ public sealed class ResourceName
     /// Create resource name.
     /// </summary>
     /// <param name="name">Name.</param>
-    /// <exception cref="ArgumentNullException">Throws if name is null or empty</exception>
+    /// <exception cref="ArgumentNullException">Throws if name is null or empty.</exception>
     public ResourceName(string name)
     {
         if (string.IsNullOrEmpty(name))
@@ -30,4 +30,6 @@ public sealed class ResourceName
            Value == name.Value;
 
     public override int GetHashCode() => Value.GetHashCode();
+
+    public override string ToString() => Value;
 }
