@@ -24,4 +24,10 @@ public sealed class ResourceName
 
         Value = name;
     }
+
+    public override bool Equals(object? obj)
+        => obj is ResourceName name &&
+           Value == name.Value;
+
+    public override int GetHashCode() => Value.GetHashCode();
 }
