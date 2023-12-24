@@ -9,7 +9,7 @@ namespace Logic;
 /// <summary>
 /// Processor that periodically sends healthcheck reports.
 /// </summary>
-public class ReportProcessor : IReportProcessor
+public sealed class ReportProcessor : IReportProcessor
 {
     /// <summary>
     /// Creates new instance of <see cref="ReportProcessor"/>.
