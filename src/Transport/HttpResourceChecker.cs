@@ -20,13 +20,11 @@ public sealed class HttpResourceChecker : IResourceChecker
 
     public async Task CheckAsync(ResourceHealthCheck resource, CancellationToken ct)
     {
-        //TODO Get from resource model.
-        Uri url = null!;
-        TimeSpan ts = TimeSpan.Zero;
+        //TODO Extract and mode to transport 
+        //TODO This class move to Logic
+        using var client = _clientProxy.ResourceClientFactory(resource.RequestSettings.Timeout);
 
-        using var client = _clientProxy.ResourceClientFactory(ts);
-
-        var response = await client.GetAsync(url, ct);
+        var response = await client.GetAsync(resource.RequestSettings.Uri, ct);
         if (response.IsSuccessStatusCode)
         {
             resource.Update();

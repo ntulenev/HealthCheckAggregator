@@ -11,6 +11,11 @@ public sealed class ResourceHealthCheck
     public ResourceName ResourceName { get; }
 
     /// <summary>
+    /// Resource settings.
+    /// </summary>
+    public ResourceRequestSettings RequestSettings { get; }
+
+    /// <summary>
     /// Healthcheck last update.
     /// </summary>
     public DateTimeOffset LastUpdage { get; private set; }
@@ -23,18 +28,21 @@ public sealed class ResourceHealthCheck
     /// <summary>
     /// Create resource healthcheck.
     /// </summary>
-    /// <param name="resourceName">Name of the resource.</param>
+    /// <param name="name">Name of the resource.</param>
     /// <param name="expirationPeriod">Healthcheck expiration period.</param>
     /// <exception cref="ArgumentNullException">Throws if
-    /// <paramref name="resourceName"/> is null.</exception>
+    /// <paramref name="name"/> is null.</exception>
     public ResourceHealthCheck(
-                ResourceName resourceName,
-                TimeSpan expirationPeriod)
+                ResourceName name,
+                TimeSpan expirationPeriod,
+                ResourceRequestSettings requestSettings)
     {
-        ArgumentNullException.ThrowIfNull(resourceName);
-        ResourceName = resourceName;
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(requestSettings);
+        ResourceName = name;
         LastUpdage = DateTimeOffset.MinValue;
         ExpirationPeriod = expirationPeriod;
+        RequestSettings = requestSettings;
     }
 
     /// <summary>
