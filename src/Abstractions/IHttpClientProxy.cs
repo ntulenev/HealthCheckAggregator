@@ -9,5 +9,5 @@ public interface IHttpClientProxy
     /// <summary>
     /// Property containing a configured <see cref="HttpClient"/>.
     /// </summary>
-    public HttpClient Client { get; }
+    public HttpClient SenderClient { get; }
 }
