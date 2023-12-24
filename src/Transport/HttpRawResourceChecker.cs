@@ -58,5 +58,5 @@ public sealed class HttpRawResourceChecker : IRawResourceChecker
     }
 
     private readonly IHttpClientProxy _clientProxy;
-    private readonly ILogger<HttpRawResourceChecker> _logger;
+    private readonly ILogger _logger;
 }

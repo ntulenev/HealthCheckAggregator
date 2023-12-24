@@ -52,5 +52,5 @@ public sealed class ResourceChecker : IResourceChecker
     }
 
     private readonly IRawResourceChecker _rawChecker;
-    private readonly ILogger<ResourceChecker> _logger;
+    private readonly ILogger _logger;
 }

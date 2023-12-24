@@ -66,7 +66,7 @@ public sealed class ReportSender
         _logger.LogInformation("Report sent");
     }
 
-    private readonly ILogger<ReportSender> _logger;
+    private readonly ILogger _logger;
     private readonly IMapper _mapper;
     private readonly IRawSender<string> _rawSender;
     private readonly ISerializer<TModel.HealthCheckReport, string> _serializer;
