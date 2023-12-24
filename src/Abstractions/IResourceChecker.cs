@@ -1,4 +1,6 @@
-﻿namespace Abstractions;
+﻿using Models;
+
+namespace Abstractions;
 
 /// <summary>
 /// Checks the resource healthcheck.
@@ -9,5 +11,6 @@ public interface IResourceChecker
     /// Checks the resource healthcheck.
     /// </summary>
     /// <param name="ct">Token for cancel.</param>
-    public Task CheckAsync(CancellationToken ct);
+    /// <returns>Status of HC.</returns>
+    public Task CheckAsync(ResourceHealthCheck resouce, CancellationToken ct);
 }

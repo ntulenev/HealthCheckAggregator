@@ -7,7 +7,12 @@
 public interface IHttpClientProxy
 {
     /// <summary>
-    /// Property containing a configured <see cref="HttpClient"/>.
+    /// Property containing a configured <see cref="HttpClient"/> for send aggregated healthcheck.
     /// </summary>
     public HttpClient SenderClient { get; }
+
+    /// <summary>
+    /// Creates containing a configured <see cref="HttpClient"/> for pull healthchecks form resources.
+    /// </summary>
+    public HttpClient ResourceClientFactory(TimeSpan timeout);
 }
