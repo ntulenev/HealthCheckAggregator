@@ -36,13 +36,14 @@ public sealed class ReportSender
         _mapper = mapper;
         _rawSender = rawSender;
         _serializer = serializer;
+        //TODO Add configuration
     }
 
     /// <inheritdoc/>
     /// <exception cref="ArgumentNullException">
-    /// Throws is report is null.</exception>
+    /// Throws if report is null.</exception>
     /// <exception cref="OperationCanceledException">
-    /// Thows if token is expired.</exception>
+    /// Throws if token is expired.</exception>
     public async Task SendAsync(HealthCheckReport report, CancellationToken ct)
     {
         ArgumentNullException.ThrowIfNull(report);
@@ -55,7 +56,7 @@ public sealed class ReportSender
 
         _logger.LogDebug("Payload {payload}", payload);
 
-        await _rawSender.SendAsync(payload, ct);
+        await _rawSender.SendAsync(payload, null! /*puth from configuration*/ , ct);
 
         _logger.LogInformation("Report sent");
     }
