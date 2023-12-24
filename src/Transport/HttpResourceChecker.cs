@@ -1,7 +1,7 @@
 ﻿using Abstractions;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Models;
+
+using Microsoft.Extensions.Logging;
 
 namespace Transport;
 
@@ -23,7 +23,10 @@ public sealed class HttpResourceChecker : IResourceChecker
         //TODO Get from resource model.
         Uri url = null!;
         TimeSpan ts = TimeSpan.Zero;
-        var response = await _clientProxy.ResourceClientFactory(ts).GetAsync(url, ct);
+
+        using var client = _clientProxy.ResourceClientFactory(ts);
+
+        var response = await client.GetAsync(url, ct);
         if (response.IsSuccessStatusCode)
         {
             resource.Update();
