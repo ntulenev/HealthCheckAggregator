@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Transport;
 
+/// <summary>
+/// Http Sender that sends JSON data to the destination.
+/// </summary>
 public sealed class HttpJsonSender : IRawSender<string>
 {
     /// <summary>
