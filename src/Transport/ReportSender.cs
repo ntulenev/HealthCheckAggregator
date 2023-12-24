@@ -1,7 +1,10 @@
 ﻿using Abstractions;
 using Models;
+using Transport.Configuration;
 
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+
 using AutoMapper;
 
 using TModel = Transport.Models;
@@ -25,18 +28,20 @@ public sealed class ReportSender
     public ReportSender(ILogger<ReportSender> logger,
                         IMapper mapper,
                         IRawSender<string> rawSender,
-                        ISerializer<TModel.HealthCheckReport, string> serializer)
+                        ISerializer<TModel.HealthCheckReport, string> serializer,
+                        IOptions<ReportSenderConfiguration> config)
     {
         ArgumentNullException.ThrowIfNull(logger);
         ArgumentNullException.ThrowIfNull(mapper);
         ArgumentNullException.ThrowIfNull(rawSender);
         ArgumentNullException.ThrowIfNull(serializer);
+        ArgumentNullException.ThrowIfNull(config);
 
         _logger = logger;
         _mapper = mapper;
         _rawSender = rawSender;
         _serializer = serializer;
-        //TODO Add configuration
+        _config = config.Value;
     }
 
     /// <inheritdoc/>
@@ -49,14 +54,14 @@ public sealed class ReportSender
         ArgumentNullException.ThrowIfNull(report);
         ct.ThrowIfCancellationRequested();
 
-        _logger.LogInformation("Start sedning report {@report}", report);
+        _logger.LogInformation("Start sending report {@report} to {Url}", report, _config.Url);
 
         var rawReport = _mapper.Map<TModel.HealthCheckReport>(report);
         var payload = _serializer.Serialize(rawReport);
 
         _logger.LogDebug("Payload {payload}", payload);
 
-        await _rawSender.SendAsync(payload, null! /*puth from configuration*/ , ct);
+        await _rawSender.SendAsync(payload, new Uri(_config.Url), ct);
 
         _logger.LogInformation("Report sent");
     }
@@ -65,5 +70,6 @@ public sealed class ReportSender
     private readonly IMapper _mapper;
     private readonly IRawSender<string> _rawSender;
     private readonly ISerializer<TModel.HealthCheckReport, string> _serializer;
+    private readonly ReportSenderConfiguration _config;
 
 }
