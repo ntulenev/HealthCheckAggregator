@@ -1,4 +1,5 @@
 ﻿using Models;
+using System.Collections.Frozen;
 
 namespace Abstractions;
 
@@ -7,11 +8,12 @@ namespace Abstractions;
 /// </summary>
 public interface IHealthChecksState
 {
+
     /// <summary>
-    /// Updates healthcheck timestamp for the resource.
+    /// Gets healthchecks.
     /// </summary>
-    /// <param name="resourceName"></param>
-    public void Update(ResourceName resourceName);
+    /// <value>Healthchecks.</value>
+    public IReadOnlyCollection<ResourceHealthCheck> HealthChecks { get; }
 
     /// <summary>
     /// Builds aggregated healthcheck report about all resources.
