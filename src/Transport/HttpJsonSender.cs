@@ -12,7 +12,7 @@ public sealed class HttpJsonSender : IRawSender<string>
     /// <summary>
     /// Creates a new instance of <see cref="HttpJsonSender"/>.
     /// </summary>
-    /// <param name="clientProxy">Htto client wrapper.</param>
+    /// <param name="clientProxy">Http client wrapper.</param>
     /// <exception cref="ArgumentNullException">
     /// Throws if clientProxy is null.</exception>
     public HttpJsonSender(IHttpClientProxy clientProxy)

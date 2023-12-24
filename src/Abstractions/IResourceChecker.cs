@@ -10,7 +10,7 @@ public interface IResourceChecker
     /// <summary>
     /// Checks the resource healthcheck.
     /// </summary>
+    /// <param name="resouce">Resource to check.</param></param>
     /// <param name="ct">Token for cancel.</param>
-    /// <returns>Status of HC.</returns>
     public Task CheckAsync(ResourceHealthCheck resouce, CancellationToken ct);
 }
