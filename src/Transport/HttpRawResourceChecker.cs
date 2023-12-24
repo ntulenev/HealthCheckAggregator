@@ -48,7 +48,9 @@ public sealed class HttpRawResourceChecker : IRawResourceChecker
 
         using var client = _clientProxy.ResourceClientFactory(timeout);
 
-        var response = await client.GetAsync(uri, ct);
+        var response = await client.GetAsync(uri, ct)
+                                   .ConfigureAwait(false);
+
         if (response.IsSuccessStatusCode)
         {
             return ResourceStatus.Healthy;

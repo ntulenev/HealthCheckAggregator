@@ -37,7 +37,8 @@ public sealed class HttpJsonSender : IRawSender<string>
            Encoding.UTF8,
            CONTENT_TYPE);
 
-        await _clientProxy.SenderClient.PostAsync(uri, content, ct);
+        await _clientProxy.SenderClient.PostAsync(uri, content, ct)
+                          .ConfigureAwait(false);
     }
 
     private const string CONTENT_TYPE = "application/json";

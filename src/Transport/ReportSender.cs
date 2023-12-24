@@ -61,7 +61,8 @@ public sealed class ReportSender
 
         _logger.LogDebug("Payload {payload}", payload);
 
-        await _rawSender.SendAsync(payload, new Uri(_config.Url), ct);
+        await _rawSender.SendAsync(payload, new Uri(_config.Url), ct)
+                        .ConfigureAwait(false);
 
         _logger.LogInformation("Report sent");
     }

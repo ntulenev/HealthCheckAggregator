@@ -44,14 +44,16 @@ public sealed class ResourceCheckerProcessor : IResourceCheckerProcessor
 
             try
             {
-                await _resourceChecker.CheckAsync(_resourceHealthCheck, ct);
+                await _resourceChecker.CheckAsync(_resourceHealthCheck, ct)
+                                      .ConfigureAwait(false); 
             }
             catch (Exception ex)
             {
                 _logger.LogWarning(ex, "Error while checking resource {resource}.", _resourceHealthCheck.ResourceName);
             }
 
-            await Task.Delay(_resourceHealthCheck.RequestSettings.CheckInterval, ct);
+            await Task.Delay(_resourceHealthCheck.RequestSettings.CheckInterval, ct)
+                      .ConfigureAwait(false);
         }
     }
 
