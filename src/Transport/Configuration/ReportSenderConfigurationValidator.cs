@@ -15,15 +15,9 @@ public sealed class ReportSenderConfigurationValidator : IValidateOptions<Report
     {
         Debug.Assert(options != null);
 
-        if (string.IsNullOrEmpty(options.Url))
+        if (options.Url is null)
         {
-            return ValidateOptionsResult.Fail("Url cannot be null or empty.");
-        }
-
-        if (!Uri.TryCreate(options.Url, UriKind.Absolute, out var uriResult) ||
-                    uriResult.Scheme != Uri.UriSchemeHttp && uriResult.Scheme != Uri.UriSchemeHttps)
-        {
-            return ValidateOptionsResult.Fail($"Url '{options.Url}' is not a valid HTTP/HTTPS URL.");
+            return ValidateOptionsResult.Fail("Url cannot be null.");
         }
 
         return ValidateOptionsResult.Success;
