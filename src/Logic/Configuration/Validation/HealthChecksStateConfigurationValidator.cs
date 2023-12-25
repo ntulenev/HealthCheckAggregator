@@ -60,9 +60,9 @@ public class HealthChecksStateConfigurationValidator : IValidateOptions<HealthCh
             return ValidateOptionsResult.Fail($"Expiration period for resource '{resource.Name}' must be positive.");
         }
 
-        if (resource.Uri == null)
+        if (resource.Url == null)
         {
-            return ValidateOptionsResult.Fail($"URI for resource '{resource.Name}' is not set");
+            return ValidateOptionsResult.Fail($"Url for resource '{resource.Name}' is not set");
         }
 
         if (resource.CheckInterval <= TimeSpan.Zero)

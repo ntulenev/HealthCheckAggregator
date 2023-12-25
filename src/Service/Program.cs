@@ -54,7 +54,7 @@ _ = builder.Services.AddSingleton<Func<TimeSpan, HttpClient>>(ts =>
 builder.Services.AddSingleton<Func<ResourceConfiguration, ResourceHealthCheck>>(conf =>
 {
     var name = new ResourceName(conf.Name);
-    var settings = new ResourceRequestSettings(conf.Uri, conf.CheckInterval, conf.Timeout);
+    var settings = new ResourceRequestSettings(conf.Url, conf.CheckInterval, conf.Timeout);
     return new ResourceHealthCheck(name,
                                    conf.ExpirationPeriod,
                                    settings);
