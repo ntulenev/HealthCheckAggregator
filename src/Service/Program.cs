@@ -1,18 +1,17 @@
+using Abstractions.Logic;
 using Abstractions.State;
 using Abstractions.Transport;
 using Service.Services;
 using Transport.Configuration;
+using Transport.Configuration.Validation;
 using Transport;
 using Logic.Configuration;
+using Logic.Configuration.Validation;
 using Logic;
 
 using Microsoft.Extensions.Options;
 
 using Serilog;
-using Abstractions.Logic;
-using System;
-using Logic.Configuration.Validation;
-using Transport.Configuration.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 _ = builder.Services.AddHealthChecks();
@@ -30,6 +29,8 @@ _ = builder.Services.Configure<ReportSenderConfiguration>(builder.Configuration.
 _ = builder.Services.AddSingleton<IValidateOptions<ReportSenderConfiguration>, ReportSenderConfigurationValidator>();
 _ = builder.Services.Configure<ReportProcessorConfiguration>(builder.Configuration.GetSection(nameof(ReportProcessorConfiguration)));
 _ = builder.Services.AddSingleton<IValidateOptions<ReportProcessorConfiguration>, ReportProcessorConfigurationValidator>();
+_ = builder.Services.Configure<HealthChecksStateConfiguration>(builder.Configuration.GetSection(nameof(HealthChecksStateConfiguration)));
+_ = builder.Services.AddSingleton<IValidateOptions<HealthChecksStateConfiguration>, HealthChecksStateConfigurationValidator>();
 _ = builder.Services.AddSingleton<Func<TimeSpan, HttpClient>>(ts =>
 {
     return new HttpClient
@@ -40,7 +41,6 @@ _ = builder.Services.AddSingleton<Func<TimeSpan, HttpClient>>(ts =>
 _ = builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
     loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
 
-//State configuration Validation
 //Factory methods
 //Func<ResourceConfiguration, ResourceHealthCheck> resourceHealthChackFactory
 //appsettins.json
