@@ -29,9 +29,10 @@ _ = builder.Services.AddSingleton<IValidateOptions<ReportProcessorConfiguration>
 _ = builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
     loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
 
-//TODO IHttpClientProxy
-//State configuration
+//TODO IHttpClientProxy + IHttpClientProxyConfiguration + Validation
+//State configuration + Validation
 //Factory methods
+//appsettins.json
 
 var app = builder.Build();
 _ = app.UseHealthChecks("/hc");
