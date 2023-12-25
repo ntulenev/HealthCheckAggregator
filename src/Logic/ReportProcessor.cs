@@ -55,7 +55,7 @@ public sealed class ReportProcessor : IReportProcessor
             var report = _healthChecksState.BuildReport();
             _logger.LogDebug("Sending report {@report}", report);
             await _reportSender.SendAsync(report, ct).ConfigureAwait(false);
-            _logger.LogInformation("Report has beeen sended.");
+            _logger.LogInformation("Report processed. Wait for the next iteration.");
             await Task.Delay(_config.SendInterval, ct).ConfigureAwait(false);
         }
     }
