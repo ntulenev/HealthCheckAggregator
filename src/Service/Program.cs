@@ -11,6 +11,8 @@ using Microsoft.Extensions.Options;
 using Serilog;
 using Abstractions.Logic;
 using System;
+using Logic.Configuration.Validation;
+using Transport.Configuration.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 _ = builder.Services.AddHealthChecks();

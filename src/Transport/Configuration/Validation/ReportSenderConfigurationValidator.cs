@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Diagnostics;
 
-namespace Transport.Configuration;
+namespace Transport.Configuration.Validation;
 
 /// <summary>
 /// Validates <see cref="ReportSenderConfiguration"/>.

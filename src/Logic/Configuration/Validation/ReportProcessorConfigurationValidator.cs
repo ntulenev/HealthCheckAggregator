@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Diagnostics;
 
-namespace Logic.Configuration;
+namespace Logic.Configuration.Validation;
 
 /// <summary>
 /// Validator for <see cref="ReportProcessorConfiguration"/>.
