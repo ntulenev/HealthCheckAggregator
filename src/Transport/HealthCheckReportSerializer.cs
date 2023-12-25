@@ -1,10 +1,10 @@
-﻿using Abstractions;
-using Transport.Models;
+﻿using Transport.Models;
 
 using Newtonsoft.Json;
 
 using System.Text;
 using System.Globalization;
+using Abstractions.Transport;
 
 namespace Transport;
 

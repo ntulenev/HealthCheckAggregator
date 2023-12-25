@@ -1,4 +1,4 @@
-﻿namespace Abstractions;
+﻿namespace Abstractions.Transport;
 
 /// <summary>
 /// Provides contract of serialization from <typeparamref name="TSource"/> to <typeparamref name="TTarget"/>.

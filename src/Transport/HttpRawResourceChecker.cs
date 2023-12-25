@@ -1,7 +1,7 @@
-﻿using Abstractions;
-using Models;
+﻿using Models;
 
 using Microsoft.Extensions.Logging;
+using Abstractions.Transport;
 
 namespace Transport;
 

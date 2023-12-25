@@ -1,4 +1,4 @@
-﻿namespace Abstractions;
+﻿namespace Abstractions.Logic;
 
 /// <summary>
 /// Process resources healthchecks.

@@ -1,6 +1,6 @@
 ﻿using Models;
 
-namespace Abstractions;
+namespace Abstractions.Transport;
 
 /// <summary>
 /// Healthcheks report sender.

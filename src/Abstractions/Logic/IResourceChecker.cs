@@ -1,6 +1,5 @@
 ﻿using Models;
-
-namespace Abstractions;
+namespace Abstractions.Logic;
 
 /// <summary>
 /// Checks the resource healthcheck.

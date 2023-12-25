@@ -1,5 +1,4 @@
-﻿using Abstractions;
-using Models;
+﻿using Models;
 using Transport.Configuration;
 
 using Microsoft.Extensions.Options;
@@ -8,13 +7,14 @@ using Microsoft.Extensions.Logging;
 using AutoMapper;
 
 using TModel = Transport.Models;
+using Abstractions.Transport;
 
 namespace Logic;
 
 /// <summary>
 /// Helathcheck report sender.
 /// </summary>
-public sealed class ReportSender
+public sealed class ReportSender : IReportSender
 {
     /// <summary>
     /// Creates new instance of <see cref="ReportSender"/>.

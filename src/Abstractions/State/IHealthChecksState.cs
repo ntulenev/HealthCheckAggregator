@@ -1,7 +1,6 @@
 ﻿using Models;
-using System.Collections.Frozen;
 
-namespace Abstractions;
+namespace Abstractions.State;
 
 /// <summary>
 /// Contract for healthchecks state.

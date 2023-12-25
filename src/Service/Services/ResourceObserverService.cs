@@ -1,4 +1,4 @@
-﻿using Abstractions;
+﻿using Abstractions.Logic;
 
 namespace Service.Services
 {

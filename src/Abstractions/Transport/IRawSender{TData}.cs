@@ -1,4 +1,4 @@
-﻿namespace Abstractions;
+﻿namespace Abstractions.Transport;
 
 /// <summary>
 /// Send data to the destination.

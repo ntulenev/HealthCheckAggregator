@@ -1,7 +1,7 @@
-﻿namespace Abstractions;
+﻿namespace Abstractions.Transport;
 
 /// <summary>
-/// Wrapper around <see cref="System.Net.Http.HttpClient"/>,
+/// Wrapper around <see cref="HttpClient"/>,
 /// allowing the configuration of an HTTP client for a specific use case.
 /// </summary>
 public interface IHttpClientProxy
