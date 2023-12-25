@@ -61,10 +61,17 @@ public sealed class ReportSender : IReportSender
 
         _logger.LogDebug("Payload {payload}", payload);
 
-        await _rawSender.SendAsync(payload, _config.Url, ct)
+        var isOk = await _rawSender.SendAsync(payload, _config.Url, ct)
                         .ConfigureAwait(false);
 
-        _logger.LogInformation("Report sent");
+        if (isOk)
+        {
+            _logger.LogInformation("Report sent");
+        }
+        else
+        {
+            _logger.LogWarning("Report sending failed");
+        }
     }
 
     private readonly ILogger _logger;
