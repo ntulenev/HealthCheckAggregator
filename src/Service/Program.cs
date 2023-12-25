@@ -18,6 +18,7 @@ _ = builder.Services.AddHostedService<ResourceObserverService>();
 _ = builder.Services.AddSingleton<IHealthChecksState, HealthChecksState>();
 _ = builder.Services.AddSingleton<ISerializer<Transport.Models.HealthCheckReport, string>, HealthCheckReportSerializer>();
 _ = builder.Services.AddSingleton<IReportSender, ReportSender>();
+_ = builder.Services.AddSingleton<IHttpClientProxy, HttpClientProxy>();
 _ = builder.Services.AddSingleton<IRawSender<string>, HttpJsonSender>();
 _ = builder.Services.AddScoped<IRawResourceChecker, HttpRawResourceChecker>();
 _ = builder.Services.AddScoped<IResourceChecker, ResourceChecker>();
@@ -29,10 +30,11 @@ _ = builder.Services.AddSingleton<IValidateOptions<ReportProcessorConfiguration>
 _ = builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
     loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
 
-//TODO IHttpClientProxy + IHttpClientProxyConfiguration + Validation
 //State configuration + Validation
 //Factory methods
 //appsettins.json
+//HttpClient responseHttpClient,
+//Func<TimeSpan, HttpClient> resourceClientFactory
 
 var app = builder.Build();
 _ = app.UseHealthChecks("/hc");
