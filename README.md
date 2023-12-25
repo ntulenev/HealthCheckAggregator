@@ -39,7 +39,7 @@ graph LR
    ]
 }
 ```
-### Recources configuration
+### Resources configuration
 
 | Field         | Description                                                                         |
 | ------------- | ----------------------------------------------------------------------------------- |
