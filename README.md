@@ -22,73 +22,81 @@ graph LR
 
 ```json
 {
-  "timestamp": "2023-12-21T12:34:56Z",
-  "healthCheck": {
-    "subSystems": [
+   "timestamp":"2023-12-25T15:11:16.1792083+00:00",
+   "resources":[
       {
-        "name": "Resource A",
-        "status": "Healthy"
+         "resource_name":"Resource A",
+         "resource_status":"healthy"
       },
       {
-        "name": "Resource B",
-        "status": "Healthy"
+         "resource_name":"Resource B",
+         "resource_status":"healthy"
       },
       {
-        "name": "Resource C",
-        "status": "Unhealthy"
+         "resource_name":"Resource C",
+         "resource_status":"unhealthy"
       }
-    ]
-  }
+   ]
 }
 ```
 ### Recources configuration
 
 | Field         | Description                                                                         |
 | ------------- | ----------------------------------------------------------------------------------- |
-| name          | The name of the resource or service to be checked.                                   |
-| url           | The URL where the health check request should be made.                              |
-| crawlInterval | The time interval between health check requests.|
-| statusTimeout | The maximum time to wait for a response when requesting the status.|
+| Name          | The name of the resource or service to be checked.                                   |
+| ExpirationPeriod | Time until health check is considered obsolete.|
+| Uri           | The Uri where the health check request should be made.                              |
+| CheckInterval | The time interval between health check requests.|
+| Timeout | The maximum time to wait for a response when requesting the status.|
 
 
 ```json
 {
-  "resources": [
-    {
-      "name": "Resource A",
-      "url": "http://exampleA.com/hc",
-      "crawlInterval": "00:30:00.000",  
-      "statusTimeout": "00:00:10.000"   
-    },
-    {
-      "name": "Resource B",
-      "url": "http://exampleB.com/hc",
-      "crawlInterval": "00:15:00.000", 
-      "statusTimeout": "00:00:15.000"  
-    },
-    {
-      "name": "Resource C",
-      "url": "http://exampleC.com/hc",
-      "crawlInterval": "00:01:00.000",  
-      "statusTimeout": "00:00:20.000"
-    }
-  ]
+ "Resources": [
+   {
+     "Name": "Resource A",
+     "ExpirationPeriod": "00:01:00",
+     "Uri": "https://localhost:7211/hc",
+     "CheckInterval": "00:00:30",
+     "Timeout": "00:00:15"
+   },
+   {
+     "Name": "Resource B",
+     "ExpirationPeriod": "00:00:15",
+     "Uri": "https://localhost:7212/hc",
+     "CheckInterval": "00:00:10",
+     "Timeout": "00:01:00"
+   }
+ ]
 }
 ```
 
 ### Configuration for Sending Aggregated Health Check HTTP POST Messages
 
-| Parameter        | Value               | Description                                          |
-|------------------|---------------------|------------------------------------------------------|
-| `recipient_url`  | `https://target`    | The address to which the HTTP POST message will be sent. |
-| `interval`       | `00:00:15.000`      | The time interval between sending messages.|
-| `timeout`        | `00:00:05.000`       | The maximum waiting time for a response from the server after sending the message.|
+| Parameter        | Description                                          |
+|------------------|------------------------------------------------------|
+| Url  | The address to which the HTTP POST message will be sent. |
+| Timeout      | The maximum waiting time for a response from the server after sending the message.|
 
 ```json
 {
-  "recipient_url": "https://target",
-  "interval": "00:00:15.000",
-  "timeout": "00:00:5.000"
+"ReportSenderConfiguration": {
+    "Url": "https://localhost:7210/report",
+    "Timeout": "00:00:15"
+  }
 }
 ```
 
+### Configuration for period of Sending Aggregated Health Check HTTP POST Messages
+
+| Parameter        | Description                                          |
+|------------------|------------------------------------------------------|
+| SendInterval       | The time interval between sending messages.|
+
+```json
+{
+"ReportProcessorConfiguration": {
+  "SendInterval": "00:00:30"
+}
+}
+```
