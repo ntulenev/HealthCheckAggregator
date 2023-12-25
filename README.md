@@ -45,7 +45,7 @@ graph LR
 | ------------- | ----------------------------------------------------------------------------------- |
 | Name          | The name of the resource or service to be checked.                                   |
 | ExpirationPeriod | Time until health check is considered obsolete.|
-| Uri           | The Uri where the health check request should be made.                              |
+| Url           | The Uri where the health check request should be made.                              |
 | CheckInterval | The time interval between health check requests.|
 | Timeout | The maximum time to wait for a response when requesting the status.|
 
@@ -56,14 +56,14 @@ graph LR
    {
      "Name": "Resource A",
      "ExpirationPeriod": "00:01:00",
-     "Uri": "https://localhost:7211/hc",
+     "Url": "https://localhost:7211/hc",
      "CheckInterval": "00:00:30",
      "Timeout": "00:00:15"
    },
    {
      "Name": "Resource B",
      "ExpirationPeriod": "00:00:15",
-     "Uri": "https://localhost:7212/hc",
+     "Url": "https://localhost:7212/hc",
      "CheckInterval": "00:00:10",
      "Timeout": "00:01:00"
    }
