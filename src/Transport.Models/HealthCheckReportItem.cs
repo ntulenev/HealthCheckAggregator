@@ -1,6 +1,8 @@
 ﻿using Models;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace Transport.Models;
 
@@ -20,5 +22,6 @@ public sealed class HealthCheckReportItem
     /// Resource status.
     /// </summary>
     [JsonProperty("resource_status", Required = Required.Always)]
+    [JsonConverter(typeof(StringEnumConverter), typeof(SnakeCaseNamingStrategy))]
     public required ResourceStatus Status { get; init; }
 }
