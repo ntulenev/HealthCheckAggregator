@@ -38,8 +38,9 @@ _ = builder.Services.AddSingleton<Func<TimeSpan, HttpClient>>(ts =>
 _ = builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
     loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
 
-//State configuration + Validation
+//State configuration Validation
 //Factory methods
+//Func<ResourceConfiguration, ResourceHealthCheck> resourceHealthChackFactory
 //appsettins.json
 //HttpClient responseHttpClient,
 
