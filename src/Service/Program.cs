@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 
 using Serilog;
 using Abstractions.Logic;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 _ = builder.Services.AddHealthChecks();
@@ -27,6 +28,13 @@ _ = builder.Services.Configure<ReportSenderConfiguration>(builder.Configuration.
 _ = builder.Services.AddSingleton<IValidateOptions<ReportSenderConfiguration>, ReportSenderConfigurationValidator>();
 _ = builder.Services.Configure<ReportProcessorConfiguration>(builder.Configuration.GetSection(nameof(ReportProcessorConfiguration)));
 _ = builder.Services.AddSingleton<IValidateOptions<ReportProcessorConfiguration>, ReportProcessorConfigurationValidator>();
+_ = builder.Services.AddSingleton<Func<TimeSpan, HttpClient>>(ts =>
+{
+    return new HttpClient
+    {
+        Timeout = ts
+    };
+});
 _ = builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
     loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
 
@@ -34,7 +42,6 @@ _ = builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
 //Factory methods
 //appsettins.json
 //HttpClient responseHttpClient,
-//Func<TimeSpan, HttpClient> resourceClientFactory
 
 var app = builder.Build();
 _ = app.UseHealthChecks("/hc");
