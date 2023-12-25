@@ -40,12 +40,16 @@ public sealed class ResourceCheckerProcessor : IResourceCheckerProcessor
     {
         while (true)
         {
+            using var _ = _logger.BeginScope("Resource {resource}.", _resourceHealthCheck.ResourceName);
+
             ct.ThrowIfCancellationRequested();
 
             try
             {
+
+
                 await _resourceChecker.CheckAsync(_resourceHealthCheck, ct)
-                                      .ConfigureAwait(false); 
+                                      .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
