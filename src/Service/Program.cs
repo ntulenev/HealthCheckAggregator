@@ -4,6 +4,7 @@ using Abstractions.Transport;
 using Service.Services;
 using Transport.Configuration;
 using Transport.Configuration.Validation;
+using Transport.Mapping;
 using Transport;
 using Logic.Configuration;
 using Logic.Configuration.Validation;
@@ -31,6 +32,16 @@ _ = builder.Services.Configure<ReportProcessorConfiguration>(builder.Configurati
 _ = builder.Services.AddSingleton<IValidateOptions<ReportProcessorConfiguration>, ReportProcessorConfigurationValidator>();
 _ = builder.Services.Configure<HealthChecksStateConfiguration>(builder.Configuration.GetSection(nameof(HealthChecksStateConfiguration)));
 _ = builder.Services.AddSingleton<IValidateOptions<HealthChecksStateConfiguration>, HealthChecksStateConfigurationValidator>();
+_ = builder.Services.AddAutoMapper(cfg => cfg.AddProfile<HealthCheckMappingProfile>());
+_ = builder.Services.AddSingleton(sp =>
+    {
+        var config = sp.GetRequiredService<IOptions<ReportSenderConfiguration>>().Value;
+        // TODO Check If Validation Starts.
+        return new HttpClient()
+        {
+            Timeout = config.Timeout
+        };
+    });
 _ = builder.Services.AddSingleton<Func<TimeSpan, HttpClient>>(ts =>
 {
     return new HttpClient
@@ -44,7 +55,6 @@ _ = builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
 //Factory methods
 //Func<ResourceConfiguration, ResourceHealthCheck> resourceHealthChackFactory
 //appsettins.json
-//HttpClient responseHttpClient,
 
 var app = builder.Build();
 _ = app.UseHealthChecks("/hc");

@@ -20,6 +20,11 @@ public sealed class ReportSenderConfigurationValidator : IValidateOptions<Report
             return ValidateOptionsResult.Fail("Url cannot be null.");
         }
 
+        if (options.Timeout <= TimeSpan.Zero)
+        {
+            return ValidateOptionsResult.Fail("Timeout must be positive.");
+        }
+
         return ValidateOptionsResult.Success;
     }
 }

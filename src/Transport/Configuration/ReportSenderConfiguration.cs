@@ -9,4 +9,6 @@ public sealed class ReportSenderConfiguration
     /// Report sender destination url.
     /// </summary>
     public required Uri Url { get; init; }
+
+    public required TimeSpan Timeout { get; init; }
 }
