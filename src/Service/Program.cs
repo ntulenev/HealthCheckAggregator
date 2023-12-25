@@ -9,6 +9,7 @@ using Transport;
 using Logic.Configuration;
 using Logic.Configuration.Validation;
 using Logic;
+using Models;
 
 using Microsoft.Extensions.Options;
 
@@ -23,9 +24,10 @@ _ = builder.Services.AddSingleton<ISerializer<Transport.Models.HealthCheckReport
 _ = builder.Services.AddSingleton<IReportSender, ReportSender>();
 _ = builder.Services.AddSingleton<IHttpClientProxy, HttpClientProxy>();
 _ = builder.Services.AddSingleton<IRawSender<string>, HttpJsonSender>();
-_ = builder.Services.AddScoped<IRawResourceChecker, HttpRawResourceChecker>();
-_ = builder.Services.AddScoped<IResourceChecker, ResourceChecker>();
-_ = builder.Services.AddScoped<IResourceCheckerProcessor, ResourceCheckerProcessor>();
+_ = builder.Services.AddSingleton<IResourcesObserver, ResourcesObserver>();
+_ = builder.Services.AddSingleton<IReportProcessor, ReportProcessor>();
+_ = builder.Services.AddTransient<IRawResourceChecker, HttpRawResourceChecker>();
+_ = builder.Services.AddTransient<IResourceChecker, ResourceChecker>();
 _ = builder.Services.Configure<ReportSenderConfiguration>(builder.Configuration.GetSection(nameof(ReportSenderConfiguration)));
 _ = builder.Services.AddSingleton<IValidateOptions<ReportSenderConfiguration>, ReportSenderConfigurationValidator>();
 _ = builder.Services.Configure<ReportProcessorConfiguration>(builder.Configuration.GetSection(nameof(ReportProcessorConfiguration)));
@@ -49,11 +51,25 @@ _ = builder.Services.AddSingleton<Func<TimeSpan, HttpClient>>(ts =>
         Timeout = ts
     };
 });
+_ = builder.Services.AddSingleton<Func<ResourceConfiguration, ResourceHealthCheck>>(conf =>
+{
+    var name = new ResourceName(conf.Name);
+    var settings = new ResourceRequestSettings(conf.Uri, conf.CheckInterval, conf.Timeout);
+    return new ResourceHealthCheck(name,
+                                   conf.ExpirationPeriod,
+                                   settings);
+});
+_ = builder.Services.AddSingleton<Func<ResourceHealthCheck, IResourceCheckerProcessor>>(sp =>
+{
+    IResourceCheckerProcessor factory(ResourceHealthCheck res)
+    {
+        return ActivatorUtilities.CreateInstance<ResourceCheckerProcessor>(sp, res);
+    }
+    return factory;
+});
 _ = builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
     loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
 
-//Factory methods
-//Func<ResourceConfiguration, ResourceHealthCheck> resourceHealthChackFactory
 //appsettins.json
 
 var app = builder.Build();

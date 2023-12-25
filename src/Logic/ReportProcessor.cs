@@ -4,6 +4,7 @@ using Abstractions.Transport;
 using Logic.Configuration;
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Logic;
 
@@ -22,7 +23,7 @@ public sealed class ReportProcessor : IReportProcessor
     /// <exception cref="ArgumentNullException">Throws if any of 
     /// params is null.</exception>
     public ReportProcessor(
-               ReportProcessorConfiguration config,
+               IOptions<ReportProcessorConfiguration> config,
                ILogger<ReportProcessor> logger,
                IHealthChecksState healthChecksState,
                IReportSender reportSender)
@@ -32,7 +33,7 @@ public sealed class ReportProcessor : IReportProcessor
         ArgumentNullException.ThrowIfNull(healthChecksState);
         ArgumentNullException.ThrowIfNull(reportSender);
 
-        _config = config;
+        _config = config.Value;
         _logger = logger;
         _healthChecksState = healthChecksState;
         _reportSender = reportSender;
