@@ -1,14 +1,14 @@
+using Abstractions.State;
+using Abstractions.Transport;
 using Service.Services;
 using Transport.Configuration;
+using Transport;
 using Logic.Configuration;
 using Logic;
-using Abstractions.State;
 
 using Microsoft.Extensions.Options;
 
 using Serilog;
-using Abstractions.Transport;
-using Transport;
 
 var builder = WebApplication.CreateBuilder(args);
 _ = builder.Services.AddHealthChecks();
