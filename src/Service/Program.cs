@@ -16,26 +16,26 @@ using Microsoft.Extensions.Options;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-_ = builder.Services.AddHealthChecks();
-_ = builder.Services.AddHostedService<SenderService>();
-_ = builder.Services.AddHostedService<ResourceObserverService>();
-_ = builder.Services.AddSingleton<IHealthChecksState, HealthChecksState>();
-_ = builder.Services.AddSingleton<ISerializer<Transport.Models.HealthCheckReport, string>, HealthCheckReportSerializer>();
-_ = builder.Services.AddSingleton<IReportSender, ReportSender>();
-_ = builder.Services.AddSingleton<IHttpClientProxy, HttpClientProxy>();
-_ = builder.Services.AddSingleton<IRawSender<string>, HttpJsonSender>();
-_ = builder.Services.AddSingleton<IResourcesObserver, ResourcesObserver>();
-_ = builder.Services.AddSingleton<IReportProcessor, ReportProcessor>();
-_ = builder.Services.AddTransient<IRawResourceChecker, HttpRawResourceChecker>();
-_ = builder.Services.AddTransient<IResourceChecker, ResourceChecker>();
-_ = builder.Services.Configure<ReportSenderConfiguration>(builder.Configuration.GetSection(nameof(ReportSenderConfiguration)));
-_ = builder.Services.AddSingleton<IValidateOptions<ReportSenderConfiguration>, ReportSenderConfigurationValidator>();
-_ = builder.Services.Configure<ReportProcessorConfiguration>(builder.Configuration.GetSection(nameof(ReportProcessorConfiguration)));
-_ = builder.Services.AddSingleton<IValidateOptions<ReportProcessorConfiguration>, ReportProcessorConfigurationValidator>();
-_ = builder.Services.Configure<HealthChecksStateConfiguration>(builder.Configuration.GetSection(nameof(HealthChecksStateConfiguration)));
-_ = builder.Services.AddSingleton<IValidateOptions<HealthChecksStateConfiguration>, HealthChecksStateConfigurationValidator>();
-_ = builder.Services.AddAutoMapper(cfg => cfg.AddProfile<HealthCheckMappingProfile>());
-_ = builder.Services.AddSingleton(sp =>
+builder.Services.AddHealthChecks();
+builder.Services.AddHostedService<SenderService>();
+builder.Services.AddHostedService<ResourceObserverService>();
+builder.Services.AddSingleton<IHealthChecksState, HealthChecksState>();
+builder.Services.AddSingleton<ISerializer<Transport.Models.HealthCheckReport, string>, HealthCheckReportSerializer>();
+builder.Services.AddSingleton<IReportSender, ReportSender>();
+builder.Services.AddSingleton<IHttpClientProxy, HttpClientProxy>();
+builder.Services.AddSingleton<IRawSender<string>, HttpJsonSender>();
+builder.Services.AddSingleton<IResourcesObserver, ResourcesObserver>();
+builder.Services.AddSingleton<IReportProcessor, ReportProcessor>();
+builder.Services.AddTransient<IRawResourceChecker, HttpRawResourceChecker>();
+builder.Services.AddTransient<IResourceChecker, ResourceChecker>();
+builder.Services.Configure<ReportSenderConfiguration>(builder.Configuration.GetSection(nameof(ReportSenderConfiguration)));
+builder.Services.AddSingleton<IValidateOptions<ReportSenderConfiguration>, ReportSenderConfigurationValidator>();
+builder.Services.Configure<ReportProcessorConfiguration>(builder.Configuration.GetSection(nameof(ReportProcessorConfiguration)));
+builder.Services.AddSingleton<IValidateOptions<ReportProcessorConfiguration>, ReportProcessorConfigurationValidator>();
+builder.Services.Configure<HealthChecksStateConfiguration>(builder.Configuration.GetSection(nameof(HealthChecksStateConfiguration)));
+builder.Services.AddSingleton<IValidateOptions<HealthChecksStateConfiguration>, HealthChecksStateConfigurationValidator>();
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<HealthCheckMappingProfile>());
+builder.Services.AddSingleton(sp =>
     {
         var config = sp.GetRequiredService<IOptions<ReportSenderConfiguration>>().Value;
         // TODO Check If Validation Starts.
@@ -51,7 +51,7 @@ _ = builder.Services.AddSingleton<Func<TimeSpan, HttpClient>>(ts =>
         Timeout = ts
     };
 });
-_ = builder.Services.AddSingleton<Func<ResourceConfiguration, ResourceHealthCheck>>(conf =>
+builder.Services.AddSingleton<Func<ResourceConfiguration, ResourceHealthCheck>>(conf =>
 {
     var name = new ResourceName(conf.Name);
     var settings = new ResourceRequestSettings(conf.Uri, conf.CheckInterval, conf.Timeout);
@@ -59,7 +59,7 @@ _ = builder.Services.AddSingleton<Func<ResourceConfiguration, ResourceHealthChec
                                    conf.ExpirationPeriod,
                                    settings);
 });
-_ = builder.Services.AddSingleton<Func<ResourceHealthCheck, IResourceCheckerProcessor>>(sp =>
+builder.Services.AddSingleton<Func<ResourceHealthCheck, IResourceCheckerProcessor>>(sp =>
 {
     IResourceCheckerProcessor factory(ResourceHealthCheck res)
     {
@@ -67,14 +67,12 @@ _ = builder.Services.AddSingleton<Func<ResourceHealthCheck, IResourceCheckerProc
     }
     return factory;
 });
-_ = builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
     loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
 
-//appsettins.json
-
 var app = builder.Build();
-_ = app.UseHealthChecks("/hc");
-_ = app.UseHttpsRedirection();
+app.UseHealthChecks("/hc");
+app.UseHttpsRedirection();
 
 await app.RunAsync();
 
