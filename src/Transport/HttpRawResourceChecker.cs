@@ -36,9 +36,9 @@ public sealed class HttpRawResourceChecker : IRawResourceChecker
     /// <exception cref="OperationCanceledException">
     /// Throws if token is expired.
     /// </exception>
-    public async Task<ResourceStatus> CheckAsync(TimeSpan timeout, Uri uri, CancellationToken ct)
+    public async Task<ResourceStatus> CheckAsync(TimeSpan timeout, Uri url, CancellationToken ct)
     {
-        ArgumentNullException.ThrowIfNull(uri);
+        ArgumentNullException.ThrowIfNull(url);
         ct.ThrowIfCancellationRequested();
 
         if (timeout <= TimeSpan.Zero)
@@ -50,7 +50,7 @@ public sealed class HttpRawResourceChecker : IRawResourceChecker
 
         try
         {
-            var response = await client.GetAsync(uri, ct)
+            var response = await client.GetAsync(url, ct)
                                        .ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode)
@@ -60,7 +60,7 @@ public sealed class HttpRawResourceChecker : IRawResourceChecker
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Error while checking resource {uri}.", uri);
+            _logger.LogWarning(ex, "Error while checking resource {url}.", url);
         }
 
         return ResourceStatus.Unhealthy;

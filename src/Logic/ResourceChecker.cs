@@ -44,7 +44,7 @@ public sealed class ResourceChecker : IResourceChecker
 
         var status = await _rawChecker.CheckAsync(
                                 resource.RequestSettings.Timeout,
-                                resource.RequestSettings.Uri,
+                                resource.RequestSettings.Url,
                                 ct)
                            .ConfigureAwait(false);
         if (status == ResourceStatus.Healthy)

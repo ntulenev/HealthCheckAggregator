@@ -28,10 +28,10 @@ public sealed class HttpJsonSender : IRawSender<string>
 
     /// <inheritdoc/>
     /// <exception cref="ArgumentNullException">
-    /// Throws is data for uri is null.</exception>
+    /// Throws is data for url is null.</exception>
     /// <exception cref="OperationCanceledException">
     /// Throws if token is expired.</exception>
-    public async Task<bool> SendAsync(string data, Uri uri, CancellationToken ct)
+    public async Task<bool> SendAsync(string data, Uri url, CancellationToken ct)
     {
         ArgumentNullException.ThrowIfNull(data);
         ct.ThrowIfCancellationRequested();
@@ -44,7 +44,7 @@ public sealed class HttpJsonSender : IRawSender<string>
 
         try
         {
-            var result = await _clientProxy.SenderClient.PostAsync(uri, content, ct)
+            var result = await _clientProxy.SenderClient.PostAsync(url, content, ct)
                               .ConfigureAwait(false);
 
             if (result.IsSuccessStatusCode)
@@ -53,15 +53,15 @@ public sealed class HttpJsonSender : IRawSender<string>
             }
             else
             {
-                _logger.LogWarning("Failed to send data to {uri}. Status code: {code}. Reason: {reason}",
-                                  uri,
+                _logger.LogWarning("Failed to send data to {url}. Status code: {code}. Reason: {reason}",
+                                  url,
                                   result.StatusCode,
                                   result.ReasonPhrase);
             }
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to send data to {uri}.", uri);
+            _logger.LogWarning(ex, "Failed to send data to {url}.", url);
         }
 
         return false;

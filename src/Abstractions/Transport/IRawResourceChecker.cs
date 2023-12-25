@@ -11,8 +11,8 @@ public interface IRawResourceChecker
     /// Checks the resource health status.
     /// </summary>
     /// <param name="timeout">Request timeout.</param>
-    /// <param name="uri">Request URI.</param>
+    /// <param name="url">Request URL.</param>
     /// <param name="ct">token for cancel.</param>
     /// <returns>Healthcheck status.</returns>
-    public Task<ResourceStatus> CheckAsync(TimeSpan timeout, Uri uri, CancellationToken ct);
+    public Task<ResourceStatus> CheckAsync(TimeSpan timeout, Uri url, CancellationToken ct);
 }
