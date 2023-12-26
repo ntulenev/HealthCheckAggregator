@@ -1,5 +1,6 @@
 ﻿using Models;
 using Transport.Configuration;
+using Abstractions.Transport;
 
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
@@ -7,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using AutoMapper;
 
 using TModel = Transport.Models;
-using Abstractions.Transport;
 
 namespace Logic;
 

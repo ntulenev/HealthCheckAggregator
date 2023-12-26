@@ -1,7 +1,7 @@
 ﻿using Models;
+using Abstractions.Logic;
 
 using Microsoft.Extensions.Logging;
-using Abstractions.Logic;
 
 namespace Logic;
 

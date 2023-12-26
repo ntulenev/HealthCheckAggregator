@@ -1,8 +1,8 @@
 ﻿using Models;
-
-using Microsoft.Extensions.Logging;
 using Abstractions.Transport;
 using Abstractions.Logic;
+
+using Microsoft.Extensions.Logging;
 
 namespace Logic;
 
