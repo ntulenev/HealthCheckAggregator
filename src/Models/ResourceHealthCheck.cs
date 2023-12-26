@@ -18,7 +18,17 @@ public sealed class ResourceHealthCheck
     /// <summary>
     /// Healthcheck last update.
     /// </summary>
-    public DateTimeOffset LastUpdage { get; private set; }
+    public DateTimeOffset LastUpdage
+    {
+        get
+        {
+            //Inform the compiler and the runtime that this variable can be changed
+            //by multiple threads, and this prevents the compiler or the CPU from applying
+            //optimizations like caching this variable locally.
+            var storedTicks = Volatile.Read(ref _dateTicks);
+            return new DateTimeOffset(storedTicks, TimeSpan.Zero);
+        }
+    }
 
     /// <summary>
     /// Healthcheck expiration period.
@@ -39,8 +49,8 @@ public sealed class ResourceHealthCheck
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(requestSettings);
+        _dateTicks = DateTimeOffset.MinValue.Ticks;
         ResourceName = name;
-        LastUpdage = DateTimeOffset.MinValue;
         ExpirationPeriod = expirationPeriod;
         RequestSettings = requestSettings;
     }
@@ -64,7 +74,10 @@ public sealed class ResourceHealthCheck
     /// </summary>
     public void Update()
     {
-        LastUpdage = DateTimeOffset.UtcNow;
+        //Inform the compiler and the runtime that this variable can be changed
+        //by multiple threads, and this prevents the compiler or the CPU from applying
+        //optimizations like caching this variable locally.
+        _ = Interlocked.Exchange(ref _dateTicks, DateTimeOffset.UtcNow.Ticks);
     }
 
     /// <inheritdoc/>
@@ -74,4 +87,7 @@ public sealed class ResourceHealthCheck
             $"LastUpadate: {LastUpdage} " +
             $"ExporationPeriod: {ExpirationPeriod}";
     }
+
+    private long _dateTicks;
 }
+
