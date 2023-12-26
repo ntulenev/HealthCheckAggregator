@@ -15,7 +15,10 @@ public sealed class HealthCheckReport
     /// </summary>
     public IReadOnlyCollection<HealthCheckReportItem> ReportItems => _reportItems;
 
-    public bool IsUnhealthy => _reportItems.Any(x => x.Status == ResourceStatus.Unhealthy);
+    /// <summary>
+    /// Check report status.
+    /// </summary>
+    public bool IsUnhealthy => _reportItems.All(x => x.Status == ResourceStatus.Unhealthy);
 
     /// <summary>
     /// Creates <see cref="HealthCheckReport"/>.
