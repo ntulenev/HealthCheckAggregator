@@ -22,7 +22,7 @@ public sealed class ResourceHealthCheck
     {
         get
         {
-            //Inform the compiler and the runtime that this variable can be changed
+            //Inform the compiler and the runtime that this variable can be used
             //by multiple threads, and this prevents the compiler or the CPU from applying
             //optimizations like caching this variable locally.
             var storedTicks = Volatile.Read(ref _dateTicks);
@@ -74,7 +74,7 @@ public sealed class ResourceHealthCheck
     /// </summary>
     public void Update()
     {
-        //Inform the compiler and the runtime that this variable can be changed
+        //Inform the compiler and the runtime that this variable can be used
         //by multiple threads, and this prevents the compiler or the CPU from applying
         //optimizations like caching this variable locally.
         _ = Interlocked.Exchange(ref _dateTicks, DateTimeOffset.UtcNow.Ticks);
