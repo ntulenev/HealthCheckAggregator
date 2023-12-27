@@ -75,7 +75,7 @@ public static class RegistrationHelpers
         services.AddSingleton(sp =>
         {
             var config = sp.GetRequiredService<IOptions<ReportSenderConfiguration>>().Value;
-            // TODO Check If Validation Starts.
+
             return new HttpClient()
             {
                 Timeout = config.Timeout
@@ -93,7 +93,7 @@ public static class RegistrationHelpers
     /// <summary>
     /// Register healtcheck sender logic.
     /// </summary>
-    public static void RegisterSender(this IServiceCollection services,IConfiguration configuration)
+    public static void RegisterSender(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IReportProcessor, ReportProcessor>();
         services.AddSingleton<ISerializer<Transport.Models.HealthCheckReport, string>, HealthCheckReportSerializer>();
