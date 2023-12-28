@@ -15,11 +15,17 @@ public sealed class ResourceName
     /// </summary>
     /// <param name="name">Name.</param>
     /// <exception cref="ArgumentNullException">Throws if name is null or empty.</exception>
+    /// <exception cref="ArgumentException">Throws if name is whitespace.</exception>
     public ResourceName(string name)
     {
         if (string.IsNullOrEmpty(name))
         {
             throw new ArgumentNullException(nameof(name), "Name cannot be null or empty.");
+        }
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Name cannot be whitespace.", nameof(name));
         }
 
         Value = name;
