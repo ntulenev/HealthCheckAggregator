@@ -4,7 +4,7 @@ namespace Models.Tests
 {
     public class HealthCheckReportItemTests
     {
-        [Fact(DisplayName = "Constructor initializes ResourceName and Status properties")]
+        [Fact(DisplayName = $"{nameof(HealthCheckReportItem)} can be created with valid params")]
         [Trait("Category", "Unit")]
         public void ConstructorInitializesResourceNameAndStatusProperties()
         {
@@ -20,7 +20,7 @@ namespace Models.Tests
             reportItem.Status.Should().Be(status);
         }
 
-        [Fact(DisplayName = "Constructor throws ArgumentNullException for null ResourceName")]
+        [Fact(DisplayName = $"{nameof(HealthCheckReportItem)} throws ArgumentNullException for null ResourceName")]
         [Trait("Category", "Unit")]
         public void ConstructorThrowsArgumentNullExceptionForNullResourceName()
         {
@@ -35,7 +35,7 @@ namespace Models.Tests
             act.Should().Throw<ArgumentNullException>();
         }
 
-        [Fact(DisplayName = "Constructor throws ArgumentException for invalid Status")]
+        [Fact(DisplayName = $"{nameof(HealthCheckReportItem)} throws ArgumentException for invalid Status")]
         [Trait("Category", "Unit")]
         public void ConstructorThrowsArgumentExceptionForInvalidStatus()
         {

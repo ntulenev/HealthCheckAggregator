@@ -4,7 +4,7 @@ namespace Models.Tests;
 
 public class ResourceNameTests
 {
-    [Fact(DisplayName = "Constructor initializes Value property with valid name")]
+    [Fact(DisplayName = $"{nameof(ResourceName)} can be created with valid params")]
     [Trait("Category", "Unit")]
     public void ConstructorInitializesValuePropertyWithValidName()
     {
@@ -18,7 +18,7 @@ public class ResourceNameTests
         resourceName.Value.Should().Be(nameValue);
     }
 
-    [Theory(DisplayName = "Constructor throws ArgumentNullException for null or empty name")]
+    [Theory(DisplayName = $"{nameof(ResourceName)} throws ArgumentNullException for null or empty name")]
     [InlineData(null)]
     [InlineData("")]
     [Trait("Category", "Unit")]
@@ -31,7 +31,7 @@ public class ResourceNameTests
         act.Should().Throw<ArgumentNullException>();
     }
 
-    [Fact(DisplayName = "Constructor throws ArgumentException for whitespace name")]
+    [Fact(DisplayName = $"{nameof(ResourceName)} throws ArgumentException for whitespace name")]
     [Trait("Category", "Unit")]
     public void ConstructorThrowsArgumentExceptionForWhiteSpaceName()
     {
@@ -44,7 +44,7 @@ public class ResourceNameTests
         act.Should().Throw<ArgumentException>();
     }
 
-    [Fact(DisplayName = "Equals method returns true for equal resource names")]
+    [Fact(DisplayName = $"{nameof(ResourceName)} Equals method returns true for equal resource names")]
     [Trait("Category", "Unit")]
     public void EqualsMethodReturnsTrueForEqualResourceNames()
     {
@@ -56,7 +56,7 @@ public class ResourceNameTests
         name1.Equals(name2).Should().BeTrue();
     }
 
-    [Fact(DisplayName = "Equals method returns false for different resource names")]
+    [Fact(DisplayName = $"{nameof(ResourceName)} Equals method returns false for different resource names")]
     [Trait("Category", "Unit")]
     public void EqualsMethodReturnsFalseForDifferentResourceNames()
     {
@@ -68,7 +68,8 @@ public class ResourceNameTests
         name1.Equals(name2).Should().BeFalse();
     }
 
-    [Fact(DisplayName = "GetHashCode method returns the same hash code for equal resource names")]
+    [Fact(DisplayName = $"{nameof(ResourceName)} GetHashCode method returns the same " +
+        $"hash code for equal resource names")]
     [Trait("Category", "Unit")]
     public void GetHashCodeMethodReturnsSameHashCodeForEqualResourceNames()
     {
@@ -80,7 +81,7 @@ public class ResourceNameTests
         name1.GetHashCode().Should().Be(name2.GetHashCode());
     }
 
-    [Fact(DisplayName = "ToString method returns the name value")]
+    [Fact(DisplayName = $"{nameof(ResourceName)} ToString method returns the name value")]
     [Trait("Category", "Unit")]
     public void ToStringMethodReturnsNameValue()
     {

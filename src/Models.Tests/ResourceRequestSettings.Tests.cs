@@ -4,7 +4,7 @@ namespace Models.Tests;
 
 public class ResourceRequestSettingsTests
 {
-    [Fact(DisplayName = "Constructor initializes properties with valid arguments")]
+    [Fact(DisplayName = $"{nameof(ResourceRequestSettings)} can be created with valid params")]
     [Trait("Category", "Unit")]
     public void CanBeCreatedWithValidParams()
     {
@@ -22,7 +22,7 @@ public class ResourceRequestSettingsTests
         settings.Timeout.Should().Be(timeout);
     }
 
-    [Fact(DisplayName = "Constructor throws ArgumentNullException for null URL")]
+    [Fact(DisplayName = $"{nameof(ResourceRequestSettings)} throws ArgumentNullException for null URL")]
     [Trait("Category", "Unit")]
     public void CantBeCreatedWithoutUrl()
     {
@@ -36,7 +36,7 @@ public class ResourceRequestSettingsTests
         act.Should().Throw<ArgumentNullException>();
     }
 
-    [Theory(DisplayName = "Constructor throws ArgumentOutOfRangeException for invalid check interval")]
+    [Theory(DisplayName = $"{nameof(ResourceRequestSettings)} throws ArgumentOutOfRangeException for invalid check interval")]
     [Trait("Category", "Unit")]
     [InlineData(0)]
     [InlineData(-1)]
@@ -52,7 +52,7 @@ public class ResourceRequestSettingsTests
         act.Should().Throw<ArgumentOutOfRangeException>();
     }
 
-    [Theory(DisplayName = "Constructor throws ArgumentOutOfRangeException for invalid timeout")]
+    [Theory(DisplayName = $"{nameof(ResourceRequestSettings)} throws ArgumentOutOfRangeException for invalid timeout")]
     [Trait("Category", "Unit")]
     [InlineData(0)]
     [InlineData(-1)]

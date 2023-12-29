@@ -5,7 +5,7 @@ namespace Models.Tests;
 [Trait("Category", "Unit")]
 public class HealthCheckReportTests
 {
-    [Fact(DisplayName = "HealthCheckReport can be created with valid params")]
+    [Fact(DisplayName = $"{nameof(HealthCheckReport)} can be created with valid params")]
     [Trait("Category", "Unit")]
     public void CanBeCreatedWithValidParams()
     {
@@ -30,7 +30,7 @@ public class HealthCheckReportTests
         report.ReportItems.Should().HaveCount(2);
     }
 
-    [Fact(DisplayName = "Constructor throws ArgumentNullException for null resourceHealthChecks")]
+    [Fact(DisplayName = $"{nameof(HealthCheckReport)} throws ArgumentNullException for null resourceHealthChecks")]
     [Trait("Category", "Unit")]
     public void ConstructorThrowsArgumentNullExceptionForNullResourceHealthChecks()
     {
@@ -44,7 +44,7 @@ public class HealthCheckReportTests
         act.Should().Throw<ArgumentNullException>();
     }
 
-    [Fact(DisplayName = "Constructor throws ArgumentException for empty resourceHealthChecks")]
+    [Fact(DisplayName = $"{nameof(HealthCheckReport)} throws ArgumentException for empty resourceHealthChecks")]
     [Trait("Category", "Unit")]
     public void ConstructorThrowsArgumentExceptionForEmptyResourceHealthChecks()
     {
@@ -58,7 +58,7 @@ public class HealthCheckReportTests
         act.Should().Throw<ArgumentException>();
     }
 
-    [Fact(DisplayName = "IsUnhealthy returns true for all unhealthy resources")]
+    [Fact(DisplayName = $"{nameof(HealthCheckReport)} IsUnhealthy returns true for all unhealthy resources")]
     [Trait("Category", "Unit")]
     public void IsUnhealthyReturnsFalseForAllHealthyResources()
     {
@@ -81,7 +81,7 @@ public class HealthCheckReportTests
         report.IsUnhealthy.Should().BeTrue();
     }
 
-    [Fact(DisplayName = "IsUnhealthy returns false when some resources is healthy")]
+    [Fact(DisplayName = $"{nameof(HealthCheckReport)} IsUnhealthy returns false when some resources is healthy")]
     [Trait("Category", "Unit")]
     public void IsUnhealthyReturnsTrueWhenAnyResourceIsUnhealthy()
     {
