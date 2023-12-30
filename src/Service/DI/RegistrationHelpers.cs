@@ -1,13 +1,13 @@
 ﻿using Abstractions.Logic;
 using Abstractions.State;
 using Abstractions.Transport;
+using Models;
 using Logic;
 using Logic.Configuration.Validation;
 using Logic.Configuration;
 using Service.Services;
 using Transport;
 using Transport.Configuration;
-using Models;
 using Transport.Mapping;
 using Transport.Configuration.Validation;
 
