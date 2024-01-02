@@ -112,4 +112,29 @@ public class ReportProcessorTests
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
     }
+
+    [Fact(DisplayName = $"{nameof(ReportProcessor)} not executed processing on cancelled token")]
+    [Trait("Category", "Unit")]
+    public async Task NotExecutedProcessingOnCancelledToken()
+    {
+        // Arrange
+        var config = new Mock<IOptions<ReportProcessorConfiguration>>(MockBehavior.Strict);
+        config.Setup(x => x.Value)
+            .Returns(() => null!);
+        var logger = Mock.Of<ILogger<ReportProcessor>>();
+        var healthChecksState = Mock.Of<IHealthChecksState>(MockBehavior.Strict);
+        var reportSender = Mock.Of<IReportSender>(MockBehavior.Strict);
+        var processor = new ReportProcessor(config.Object, logger, healthChecksState, reportSender);
+        using var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.Cancel();
+        
+        // Act
+        var exception = await Record.ExceptionAsync(async () =>
+        {
+            await processor.ProcessAsync(cancellationTokenSource.Token);
+        });
+        
+        // Assert
+        exception.Should().BeOfType<OperationCanceledException>();
+    }
 }
