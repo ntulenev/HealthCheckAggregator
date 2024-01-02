@@ -21,17 +21,16 @@ public sealed class HttpClientProxy : IHttpClientProxy
         ArgumentNullException.ThrowIfNull(responseHttpClient);
         ArgumentNullException.ThrowIfNull(resourceClientFactory);
 
-        _httpClient = responseHttpClient;
+        SenderClient = responseHttpClient;
         _resourceClientFactory = resourceClientFactory;
     }
 
     /// <inheritdoc/>
-    public HttpClient SenderClient => _httpClient;
+    public HttpClient SenderClient { get; }
 
     /// <inheritdoc/>
     public HttpClient ResourceClientFactory(TimeSpan timeout)
         => _resourceClientFactory(timeout);
 
-    private readonly HttpClient _httpClient;
     private readonly Func<TimeSpan, HttpClient> _resourceClientFactory;
 }

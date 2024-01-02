@@ -56,7 +56,7 @@ public sealed class ReportProcessor : IReportProcessor
 
             if (report.IsUnhealthy)
             {
-                _logger.LogWarning("All resoures in the report {@report} are unhealthy. Skip sending healthcheck", report);
+                _logger.LogWarning("All resources in the report {@report} are unhealthy. Skip sending healthcheck", report);
             }
             else
             {

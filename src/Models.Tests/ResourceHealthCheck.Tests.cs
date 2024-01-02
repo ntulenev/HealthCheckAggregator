@@ -99,11 +99,11 @@ public class ResourceHealthCheckTests
                 resourceName, 
                 expirationPeriod, 
                 requestSettings);
-        var initialLastUpdate = healthCheck.LastUpdage;
+        var initialLastUpdate = healthCheck.LastUpdate;
 
         // Act
         healthCheck.Update();
-        var updatedLastUpdate = healthCheck.LastUpdage;
+        var updatedLastUpdate = healthCheck.LastUpdate;
 
         // Assert
         updatedLastUpdate.Should().BeAfter(initialLastUpdate);

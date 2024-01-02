@@ -16,10 +16,10 @@ public sealed class HealthChecksState : IHealthChecksState
     /// <summary>
     /// Creates <see cref="HealthChecksState"/>.
     /// </summary>
-    /// <param name="config">Configuraion.</param>
+    /// <param name="config">Configuration.</param>
     /// <param name="resourceHealthCheckFactory">Factory to create resource health checks.</param>
     /// <exception cref="ArgumentException">Throws if any parameter is null.</exception>
-    /// <exception cref="InvalidOperationException">Throws if resoures is empty.</exception>
+    /// <exception cref="InvalidOperationException">Throws if resources is empty.</exception>
     public HealthChecksState(
             IOptions<HealthChecksStateConfiguration> config,
             Func<ResourceConfiguration, ResourceHealthCheck> resourceHealthCheckFactory)

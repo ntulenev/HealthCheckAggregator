@@ -12,7 +12,7 @@ using TModel = Transport.Models;
 namespace Logic;
 
 /// <summary>
-/// Helathcheck report sender.
+/// Healthcheck report sender.
 /// </summary>
 public sealed class ReportSender : IReportSender
 {
@@ -23,6 +23,7 @@ public sealed class ReportSender : IReportSender
     /// <param name="mapper">Mapper for DTO</param>
     /// <param name="rawSender">Raw data sender.</param>
     /// <param name="serializer">Json serializer.</param>
+    /// <param name="config">Sender configuration.</param>
     /// <exception cref="ArgumentNullException">
     /// Throws if any param is null.</exception>
     public ReportSender(ILogger<ReportSender> logger,

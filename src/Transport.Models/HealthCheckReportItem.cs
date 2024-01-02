@@ -13,7 +13,7 @@ namespace Transport.Models;
 public sealed class HealthCheckReportItem
 {
     /// <summary>
-    /// Resournce name.
+    /// Resource name.
     /// </summary>
     [JsonProperty("resource_name", Required = Required.Always)]
     public required string ResourceName { get; init; }

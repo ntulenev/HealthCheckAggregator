@@ -81,17 +81,14 @@ public static class RegistrationHelpers
                 Timeout = config.Timeout
             };
         });
-        services.AddSingleton<Func<TimeSpan, HttpClient>>(ts =>
+        services.AddSingleton<Func<TimeSpan, HttpClient>>(ts => new HttpClient
         {
-            return new HttpClient
-            {
-                Timeout = ts
-            };
+            Timeout = ts
         });
     }
 
     /// <summary>
-    /// Register healtcheck sender logic.
+    /// Register healthcheck sender logic.
     /// </summary>
     public static void RegisterSender(this IServiceCollection services, IConfiguration configuration)
     {

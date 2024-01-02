@@ -18,7 +18,7 @@ public sealed class ResourceHealthCheck
     /// <summary>
     /// Healthcheck last update.
     /// </summary>
-    public DateTimeOffset LastUpdage
+    public DateTimeOffset LastUpdate
     {
         get
         {
@@ -40,6 +40,7 @@ public sealed class ResourceHealthCheck
     /// </summary>
     /// <param name="name">Name of the resource.</param>
     /// <param name="expirationPeriod">Healthcheck expiration period.</param>
+    /// <param name="requestSettings">Settings to operate with resource.</param>
     /// <exception cref="ArgumentNullException">Throws if
     /// <paramref name="name"/> is null.</exception>
     public ResourceHealthCheck(
@@ -49,6 +50,7 @@ public sealed class ResourceHealthCheck
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(requestSettings);
+        
         _dateTicks = DateTimeOffset.MinValue.Ticks;
         ResourceName = name;
         ExpirationPeriod = expirationPeriod;
@@ -61,7 +63,7 @@ public sealed class ResourceHealthCheck
     /// <returns>Healthcheck status.</returns>
     public ResourceStatus IsExpired()
     {
-        if (LastUpdage + ExpirationPeriod >= DateTimeOffset.UtcNow)
+        if (LastUpdate + ExpirationPeriod >= DateTimeOffset.UtcNow)
         {
             return ResourceStatus.Healthy;
         }
@@ -84,8 +86,8 @@ public sealed class ResourceHealthCheck
     public override string ToString()
     {
         return $" Resource: {ResourceName.Value} " +
-            $"LastUpadate: {LastUpdage} " +
-            $"ExporationPeriod: {ExpirationPeriod}";
+            $"LastUpdate: {LastUpdate} " +
+            $"ExpirationPeriod: {ExpirationPeriod}";
     }
 
     private long _dateTicks;

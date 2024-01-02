@@ -10,7 +10,7 @@ public sealed class SenderService : BackgroundService
     /// <summary>
     /// Creates <see cref="SenderService"/>.
     /// </summary>
-    /// <param name="reportProcessor">Healthchecks report processor.</param>
+    /// <param name="reportProcessor">Health checks report processor.</param>
     /// <exception cref="ArgumentNullException">
     /// Throws if <paramref name="reportProcessor"/> is null.
     /// </exception>
