@@ -173,11 +173,11 @@ public class ReportProcessorTests
             });
         var reportSender = Mock.Of<IReportSender>(MockBehavior.Strict);
         var processor = new ReportProcessor(
-                            config.Object, 
-                            logger, 
-                            healthChecksState.Object, 
-                            reportSender);
-        
+            config.Object,
+            logger,
+            healthChecksState.Object,
+            reportSender);
+
         // Act
         var exception = await Record.ExceptionAsync(async () =>
         {
@@ -186,6 +186,64 @@ public class ReportProcessorTests
 
         // Assert
         reportBuildCount.Should().Be(1);
+        exception.Should().BeAssignableTo<OperationCanceledException>();
+    }
+
+    [Fact(DisplayName = $"{nameof(ReportProcessor)} processing and send healthy report")]
+    [Trait("Category", "Unit")]
+    public async Task ProcessingHealthReport()
+    {
+        // Arrange
+        var reportBuildCount = 0;
+        var reportSendCount = 0;
+        using var cancellationTokenSource = new CancellationTokenSource();
+        var reportItem = new ResourceHealthCheck(
+            new ResourceName("test"),
+            TimeSpan.FromDays(1),
+            new ResourceRequestSettings(
+                new Uri("http://example.com"),
+                TimeSpan.FromDays(1),
+                TimeSpan.FromDays(1)));
+        reportItem.Update();
+        var report = new HealthCheckReport(new[]
+        {
+            reportItem
+        });
+        var tcs = new TaskCompletionSource();
+        var config = new Mock<IOptions<ReportProcessorConfiguration>>(MockBehavior.Strict);
+        config.Setup(x => x.Value)
+            .Returns(() => new ReportProcessorConfiguration
+            {
+                SendInterval = TimeSpan.FromSeconds(10)
+            });
+        var logger = Mock.Of<ILogger<ReportProcessor>>();
+        var healthChecksState = new Mock<IHealthChecksState>(MockBehavior.Strict);
+        healthChecksState.Setup(x => x.BuildReport())
+            .Returns(report).Callback(() => { reportBuildCount++; });
+        var reportSender = new Mock<IReportSender>(MockBehavior.Strict);
+        reportSender.Setup(x =>
+                x.SendAsync(report, cancellationTokenSource.Token))
+            .Returns(Task.CompletedTask)
+            .Callback(() =>
+            {
+                reportSendCount++;
+                cancellationTokenSource.Cancel();
+            });
+        var processor = new ReportProcessor(
+            config.Object,
+            logger,
+            healthChecksState.Object,
+            reportSender.Object);
+
+        // Act
+        var exception = await Record.ExceptionAsync(async () =>
+        {
+            await processor.ProcessAsync(cancellationTokenSource.Token);
+        });
+
+        // Assert
+        reportBuildCount.Should().Be(1);
+        reportSendCount.Should().Be(1);
         exception.Should().BeAssignableTo<OperationCanceledException>();
     }
 }
