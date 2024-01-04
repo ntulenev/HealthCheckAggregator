@@ -1,5 +1,3 @@
-using FluentAssertions;
-
 using Microsoft.Extensions.Options;
 
 using Logic.Configuration.Validation;
