@@ -56,4 +56,56 @@ public class HealthChecksStateTests
         // Assert
         exception.Should().BeNull();
     }
+
+    [Fact(DisplayName = $"{nameof(HealthChecksState)} cant be created without configuration options")]
+    [Trait("Category", "Unit")]
+    public void CantBeCreatedWithoutConfigurationOptions()
+    {
+        // Arrange
+        var resourceHealthCheckFactory = new Func<ResourceConfiguration, ResourceHealthCheck>(config =>
+        {
+            var requestSettings = new ResourceRequestSettings(
+                config.Url,
+                config.CheckInterval,
+                config.Timeout);
+            return new ResourceHealthCheck(
+                new ResourceName(config.Name),
+                config.ExpirationPeriod,
+                requestSettings);
+        });
+        // Act
+        var exception = Record.Exception(() =>
+            _ = new HealthChecksState(null!, resourceHealthCheckFactory));
+
+        // Assert
+        exception.Should().BeOfType<ArgumentNullException>();
+    }
+
+    [Fact(DisplayName = $"{nameof(HealthChecksState)} cant be created without resource factory")]
+    [Trait("Category", "Unit")]
+    public void CantBeCreatedWithoutResourceFactory()
+    {
+        // Arrange
+        var options = new Mock<IOptions<HealthChecksStateConfiguration>>(MockBehavior.Strict);
+        options.Setup(x => x.Value)
+            .Returns(new HealthChecksStateConfiguration
+            {
+                Resources = new List<ResourceConfiguration>
+                {
+                    new()
+                    {
+                        Name = "Resource1",
+                        ExpirationPeriod = TimeSpan.FromMinutes(5),
+                        Url = new Uri("http://example.com"),
+                        CheckInterval = TimeSpan.FromSeconds(10),
+                        Timeout = TimeSpan.FromSeconds(5)
+                    }
+                }
+            });
+        // Act
+        var exception = Record.Exception(() =>
+            _ = new HealthChecksState(options.Object, null!));
+        // Assert
+        exception.Should().BeOfType<ArgumentNullException>();
+    }
 }
