@@ -108,4 +108,35 @@ public class HealthChecksStateTests
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
     }
+
+    [Fact(DisplayName = $"{nameof(HealthChecksState)} cant be created with empty resources collection in config")]
+    [Trait("Category", "Unit")]
+    public void CantBeCreatedWithEmptyResourcesCollectionInConfig()
+    {
+        // Arrange
+        var options = new Mock<IOptions<HealthChecksStateConfiguration>>(MockBehavior.Strict);
+        options.Setup(x => x.Value)
+            .Returns(new HealthChecksStateConfiguration
+            {
+                Resources = new List<ResourceConfiguration>()
+            });
+        var resourceHealthCheckFactory = new Func<ResourceConfiguration, ResourceHealthCheck>(config =>
+        {
+            var requestSettings = new ResourceRequestSettings(
+                config.Url,
+                config.CheckInterval,
+                config.Timeout);
+            return new ResourceHealthCheck(
+                new ResourceName(config.Name),
+                config.ExpirationPeriod,
+                requestSettings);
+        });
+        
+        // Act
+        var exception = Record.Exception(() =>
+            _ = new HealthChecksState(options.Object, resourceHealthCheckFactory));
+        
+        // Assert
+        exception.Should().BeOfType<InvalidOperationException>();
+    }
 }
