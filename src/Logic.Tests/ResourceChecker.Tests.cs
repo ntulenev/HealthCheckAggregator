@@ -1,4 +1,5 @@
 ﻿using Abstractions.Transport;
+
 using Microsoft.Extensions.Logging;
 
 using Models;
@@ -95,5 +96,69 @@ public class ResourceCheckerTests
 
         // Assert
         exception.Should().BeOfType<OperationCanceledException>();
+    }
+
+    [Fact(DisplayName = $"{nameof(ResourceChecker)} should update resource on healthy status")]
+    [Trait("Category", "Unit")]
+    public async Task ResourceCheckerShouldUpdateResourceOnHealthyStatus()
+    {
+        // Arrange
+        using var cts = new CancellationTokenSource();
+        var targetUri = new Uri("http://example.com");
+        var timeout = TimeSpan.FromSeconds(42);
+        var rawChecker = new Mock<IRawResourceChecker>(MockBehavior.Strict);
+        rawChecker.Setup(x => x.CheckAsync(
+                timeout,
+                targetUri,
+                cts.Token))
+            .ReturnsAsync(ResourceStatus.Healthy);
+        var logger = new Mock<ILogger<ResourceChecker>>(MockBehavior.Strict).Object;
+        var resourceChecker = new ResourceChecker(rawChecker.Object, logger);
+        var targetResource = new ResourceHealthCheck(
+            new ResourceName("test"),
+            TimeSpan.FromMicroseconds(1),
+            new ResourceRequestSettings(
+                targetUri,
+                TimeSpan.FromMicroseconds(1),
+                timeout));
+        // Act
+
+        await resourceChecker.CheckAsync(targetResource, cts.Token);
+
+        // Assert
+        targetResource.LastUpdate.Should()
+            .BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromMinutes(1));
+    }
+
+    [Fact(DisplayName = $"{nameof(ResourceChecker)} should not update resource on unhealthy status")]
+    [Trait("Category", "Unit")]
+    public async Task ResourceCheckerShouldNotUpdateResourceOnUnhealthyStatus()
+    {
+        // Arrange
+        using var cts = new CancellationTokenSource();
+        var targetUri = new Uri("http://example.com");
+        var timeout = TimeSpan.FromSeconds(42);
+        var rawChecker = new Mock<IRawResourceChecker>(MockBehavior.Strict);
+        rawChecker.Setup(x => x.CheckAsync(
+                timeout,
+                targetUri,
+                cts.Token))
+            .ReturnsAsync(ResourceStatus.Unhealthy);
+        var logger = new Mock<ILogger<ResourceChecker>>(MockBehavior.Strict).Object;
+        var resourceChecker = new ResourceChecker(rawChecker.Object, logger);
+        var targetResource = new ResourceHealthCheck(
+            new ResourceName("test"),
+            TimeSpan.FromMicroseconds(1),
+            new ResourceRequestSettings(
+                targetUri,
+                TimeSpan.FromMicroseconds(1),
+                timeout));
+        // Act
+
+        await resourceChecker.CheckAsync(targetResource, cts.Token);
+
+        // Assert
+        targetResource.LastUpdate.Should()
+            .NotBeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromMinutes(1));
     }
 }
