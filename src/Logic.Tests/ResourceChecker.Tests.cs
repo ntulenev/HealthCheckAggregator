@@ -153,8 +153,8 @@ public class ResourceCheckerTests
                 targetUri,
                 TimeSpan.FromMicroseconds(1),
                 timeout));
+        
         // Act
-
         await resourceChecker.CheckAsync(targetResource, cts.Token);
 
         // Assert
