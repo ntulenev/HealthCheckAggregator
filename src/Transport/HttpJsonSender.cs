@@ -35,6 +35,7 @@ public sealed class HttpJsonSender : IRawSender<string>
     public async Task<bool> SendAsync(string data, Uri url, CancellationToken ct)
     {
         ArgumentNullException.ThrowIfNull(data);
+        ArgumentNullException.ThrowIfNull(url);
         ct.ThrowIfCancellationRequested();
 
         using var content =
