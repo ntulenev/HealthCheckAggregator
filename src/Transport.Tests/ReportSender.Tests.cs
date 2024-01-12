@@ -3,8 +3,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-using Moq;
-
 using Abstractions.Transport;
 using Transport.Configuration;
 
