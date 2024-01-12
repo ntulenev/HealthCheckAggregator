@@ -11,7 +11,10 @@ public class HttpClientProxyTests
         Func<TimeSpan, HttpClient> resourceClientFactory = timeout => new HttpClient();
 
         // Act
-        var exception = Record.Exception(() => { _ = new HttpClientProxy(responseHttpClient, resourceClientFactory); });
+        var exception = Record.Exception(() =>
+        {
+            _ = new HttpClientProxy(responseHttpClient, resourceClientFactory);
+        });
 
         // Assert
         exception.Should().BeNull();
@@ -24,7 +27,10 @@ public class HttpClientProxyTests
         // Arrange
         Func<TimeSpan, HttpClient> resourceClientFactory = timeout => new HttpClient();
         // Act
-        var exception = Record.Exception(() => { _ = new HttpClientProxy(null!, resourceClientFactory); });
+        var exception = Record.Exception(() =>
+        {
+            _ = new HttpClientProxy(null!, resourceClientFactory);
+        });
 
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
@@ -38,7 +44,10 @@ public class HttpClientProxyTests
         using var responseHttpClient = new HttpClient();
 
         // Act
-        var exception = Record.Exception(() => { _ = new HttpClientProxy(responseHttpClient, null!); });
+        var exception = Record.Exception(() =>
+        {
+            _ = new HttpClientProxy(responseHttpClient, null!);
+        });
 
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
@@ -67,19 +76,18 @@ public class HttpClientProxyTests
         // Arrange
         using var responseHttpClient = new HttpClient();
         var callCount = 0;
-        Func<TimeSpan, HttpClient> resourceClientFactory = timeout =>
+
+        HttpClient ResourceClientFactory(TimeSpan timeout)
         {
             if (timeout == TimeSpan.FromSeconds((10)))
             {
                 callCount++;
                 return new HttpClient();
             }
-            else
-            {
-                return null!;
-            }
-        };
-        var httpClientProxy = new HttpClientProxy(responseHttpClient, resourceClientFactory);
+            return null!;
+        }
+
+        var httpClientProxy = new HttpClientProxy(responseHttpClient, ResourceClientFactory);
         var timeout = TimeSpan.FromSeconds(10);
 
         // Act
