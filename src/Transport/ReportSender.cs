@@ -9,7 +9,7 @@ using AutoMapper;
 
 using TModel = Transport.Models;
 
-namespace Logic;
+namespace Transport;
 
 /// <summary>
 /// Healthcheck report sender.
