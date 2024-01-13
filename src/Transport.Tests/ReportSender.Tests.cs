@@ -259,17 +259,85 @@ public class ReportSenderTests
         var settings = new ResourceRequestSettings(url, checkInterval, timeout);
         var resourceHealthChecks = new List<ResourceHealthCheck>
         {
-            new(res1, TimeSpan.FromSeconds(30),settings),
-            new(res2, TimeSpan.FromSeconds(45),settings)
+            new(res1, TimeSpan.FromSeconds(30), settings),
+            new(res2, TimeSpan.FromSeconds(45), settings)
         };
         var report = new HealthCheckReport(resourceHealthChecks);
-        
+
         // Act
         var exception = await Record.ExceptionAsync(() =>
             reportSender.SendAsync(report, cts.Token)
         );
-        
+
         // Assert
         exception.Should().BeOfType<OperationCanceledException>();
+    }
+
+    [Theory(DisplayName = $"{nameof(ReportSender)} cant send report")]
+    [Trait("Category", "Unit")]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task CantSendReport(bool isHttpSuccess)
+    {
+        // Arrange
+        var logger = new Mock<ILogger<ReportSender>>();
+        var mapper = new Mock<IMapper>(MockBehavior.Strict);
+        var rawSender = new Mock<IRawSender<string>>(MockBehavior.Strict);
+        var serializer = new Mock<ISerializer<TModel.HealthCheckReport, string>>(MockBehavior.Strict);
+        var config = new Mock<IOptions<ReportSenderConfiguration>>(MockBehavior.Strict);
+        var configData = new ReportSenderConfiguration
+        {
+            Url = new Uri("http://example.com"),
+            Timeout = TimeSpan.FromSeconds(10)
+        };
+        config.Setup(x => x.Value).Returns(configData);
+        var reportSender = new ReportSender(
+            logger.Object,
+            mapper.Object,
+            rawSender.Object,
+            serializer.Object,
+            config.Object);
+        using var cts = new CancellationTokenSource();
+        var url = new Uri("https://example.com");
+        var checkInterval = TimeSpan.FromSeconds(20);
+        var timeout = TimeSpan.FromSeconds(60);
+        var res1 = new ResourceName("Resource1");
+        var res2 = new ResourceName("Resource2");
+        var settings = new ResourceRequestSettings(url, checkInterval, timeout);
+        var resourceHealthChecks = new List<ResourceHealthCheck>
+        {
+            new(res1, TimeSpan.FromSeconds(30), settings),
+            new(res2, TimeSpan.FromSeconds(45), settings)
+        };
+        var report = new HealthCheckReport(resourceHealthChecks);
+        var dtoReport = new TModel.HealthCheckReport
+        {
+            Created = report.Created,
+            ReportItems = new[]
+            {
+                new TModel.HealthCheckReportItem()
+                {
+                    ResourceName = res1.Value,
+                    Status = ResourceStatus.Healthy
+                }
+            }
+        };
+        mapper.Setup(x => x.Map<TModel.HealthCheckReport>(report))
+            .Returns(() => dtoReport);
+        var payload = "test";
+        serializer.Setup(x => x.Serialize((dtoReport))).Returns(payload);
+        var sendsCount = 0;
+        rawSender.Setup(x => x.SendAsync(payload, configData.Url, cts.Token))
+            .Returns(() => Task.FromResult(isHttpSuccess))
+            .Callback(() => sendsCount++);
+
+        // Act
+        var exception = await Record.ExceptionAsync(() =>
+            reportSender.SendAsync(report, cts.Token)
+        );
+
+        // Assert
+        exception.Should().BeNull();
+        sendsCount.Should().Be(1);
     }
 }
