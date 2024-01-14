@@ -43,13 +43,18 @@ public sealed class ResourceChecker : IResourceChecker
         ct.ThrowIfCancellationRequested();
 
         var status = await _rawChecker.CheckAsync(
-                                resource.RequestSettings.Timeout,
-                                resource.RequestSettings.Url,
-                                ct)
-                           .ConfigureAwait(false);
+                resource.RequestSettings.Timeout,
+                resource.RequestSettings.Url,
+                ct)
+            .ConfigureAwait(false);
         if (status == ResourceStatus.Healthy)
         {
+            _logger.LogInformation("Updating resource after getting Healthy status");
             resource.Update();
+        }
+        else
+        {
+            _logger.LogWarning("Skipping update resource because of unhealthy status");
         }
     }
 
