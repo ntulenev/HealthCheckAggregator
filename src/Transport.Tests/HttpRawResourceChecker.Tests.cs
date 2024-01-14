@@ -132,12 +132,9 @@ public class HttpRawResourceCheckerTests
         exception.Should().BeOfType<ArgumentException>();
     }
 
-    [Theory(DisplayName = $"{nameof(HttpRawResourceChecker)} can process all statuses")]
+    [Fact(DisplayName = $"{nameof(HttpRawResourceChecker)} can process healthy status")]
     [Trait("Category", "Unit")]
-    [InlineData(ResourceStatus.Unhealthy)]
-    //[InlineData(ResourceStatus.Healthy)]
-    //TODO fix Issue with mocking handler
-    public async Task HttpRawResourceCheckerCanProcessAllStatuses(ResourceStatus status)
+    public async Task HttpRawResourceCheckerCanProcessHealthyStatus()
     {
         // Arrange 
         using var cts = new CancellationTokenSource();
@@ -145,23 +142,16 @@ public class HttpRawResourceCheckerTests
         var uri = new Uri("http://example.com");
         var handlerMock = new Mock<HttpMessageHandler>();
         handlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                It.IsAny<CancellationToken>())
+            "SendAsync", 
+            ItExpr.Is<HttpRequestMessage>(request =>
+                request.Method == HttpMethod.Get && request.RequestUri!.Equals(uri)), 
+            ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(
                 new HttpResponseMessage
             {
-                //Content = new StringContent("test"),
-                StatusCode = status == ResourceStatus.Unhealthy
-                    ? HttpStatusCode.InternalServerError
-                    : HttpStatusCode.OK
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent("mocked API response")
             });
-
-        /*
-         *request =>
-                    request.Method == HttpMethod.Get && request.RequestUri!.Equals(uri)
-         *
-         */
         using var httpClient = new HttpClient(handlerMock.Object)
         {
             Timeout = timeout
@@ -178,6 +168,45 @@ public class HttpRawResourceCheckerTests
             cts.Token);
 
         // Assert
-        result.Should().Be(status);
+        result.Should().Be(ResourceStatus.Healthy);
+    }
+    
+    [Fact(DisplayName = $"{nameof(HttpRawResourceChecker)} can process unhealthy status")]
+    [Trait("Category", "Unit")]
+    public async Task HttpRawResourceCheckerCanProcessUnHealthyStatus()
+    {
+        // Arrange 
+        using var cts = new CancellationTokenSource();
+        var timeout = TimeSpan.FromSeconds(10);
+        var uri = new Uri("http://example.com");
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock.Protected().Setup<Task<HttpResponseMessage>>(
+                "SendAsync", 
+                ItExpr.Is<HttpRequestMessage>(request =>
+                    request.Method == HttpMethod.Get && request.RequestUri!.Equals(uri)), 
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(
+                new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Content = new StringContent("mocked API response")
+                });
+        using var httpClient = new HttpClient(handlerMock.Object)
+        {
+            Timeout = timeout
+        };
+        var clientProxy = new Mock<IHttpClientProxy>(MockBehavior.Strict);
+        clientProxy.Setup(x => x.ResourceClientFactory(timeout)).Returns(httpClient);
+        var logger = new Mock<ILogger<HttpRawResourceChecker>>();
+        var checker = new HttpRawResourceChecker(clientProxy.Object, logger.Object);
+
+        // Act
+        var result = await checker.CheckAsync(
+            timeout,
+            uri,
+            cts.Token);
+
+        // Assert
+        result.Should().Be(ResourceStatus.Unhealthy);
     }
 }
