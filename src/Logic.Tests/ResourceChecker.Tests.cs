@@ -112,7 +112,7 @@ public class ResourceCheckerTests
                 targetUri,
                 cts.Token))
             .ReturnsAsync(ResourceStatus.Healthy);
-        var logger = new Mock<ILogger<ResourceChecker>>(MockBehavior.Strict).Object;
+        var logger = new Mock<ILogger<ResourceChecker>>().Object;
         var resourceChecker = new ResourceChecker(rawChecker.Object, logger);
         var targetResource = new ResourceHealthCheck(
             new ResourceName("test"),
@@ -144,7 +144,7 @@ public class ResourceCheckerTests
                 targetUri,
                 cts.Token))
             .ReturnsAsync(ResourceStatus.Unhealthy);
-        var logger = new Mock<ILogger<ResourceChecker>>(MockBehavior.Strict).Object;
+        var logger = new Mock<ILogger<ResourceChecker>>().Object;
         var resourceChecker = new ResourceChecker(rawChecker.Object, logger);
         var targetResource = new ResourceHealthCheck(
             new ResourceName("test"),
