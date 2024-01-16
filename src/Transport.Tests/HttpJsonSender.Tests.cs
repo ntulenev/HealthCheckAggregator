@@ -1,6 +1,8 @@
-﻿using Abstractions.Transport;
-
+﻿using System.Net;
+using System.Text;
+using Abstractions.Transport;
 using Microsoft.Extensions.Logging;
+using Moq.Protected;
 
 namespace Transport.Tests;
 
@@ -15,10 +17,7 @@ public class HttpJsonSenderTests
         var logger = new Mock<ILogger<HttpJsonSender>>();
 
         // Act
-        var exception = Record.Exception(() =>
-        {
-            _ = new HttpJsonSender(clientProxy.Object, logger.Object);
-        });
+        var exception = Record.Exception(() => { _ = new HttpJsonSender(clientProxy.Object, logger.Object); });
 
         // Assert
         exception.Should().BeNull();
@@ -30,13 +29,10 @@ public class HttpJsonSenderTests
     {
         // Arrange
         var clientProxy = new Mock<IHttpClientProxy>(MockBehavior.Strict);
-        
+
         // Act
-        var exception = Record.Exception(() =>
-        {
-            _ = new HttpJsonSender(clientProxy.Object, null!);
-        });
-        
+        var exception = Record.Exception(() => { _ = new HttpJsonSender(clientProxy.Object, null!); });
+
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
     }
@@ -47,13 +43,10 @@ public class HttpJsonSenderTests
     {
         // Arrange
         var logger = new Mock<ILogger<HttpJsonSender>>();
-        
+
         // Act
-        var exception = Record.Exception(() =>
-        {
-            _ = new HttpJsonSender(null!, logger.Object);
-        });
-        
+        var exception = Record.Exception(() => { _ = new HttpJsonSender(null!, logger.Object); });
+
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
     }
@@ -89,10 +82,7 @@ public class HttpJsonSenderTests
         using var cts = new CancellationTokenSource();
 
         // Act
-        var exception = await Record.ExceptionAsync(async () =>
-        {
-            await sender.SendAsync("data", null!, cts.Token);
-        });
+        var exception = await Record.ExceptionAsync(async () => { await sender.SendAsync("data", null!, cts.Token); });
 
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
@@ -108,14 +98,84 @@ public class HttpJsonSenderTests
         var sender = new HttpJsonSender(clientProxy.Object, logger.Object);
         using var cts = new CancellationTokenSource();
         cts.Cancel();
-        
+
         // Act
         var exception = await Record.ExceptionAsync(async () =>
         {
             await sender.SendAsync("data", new Uri("http://example.com"), cts.Token);
         });
-        
+
         // Assert
         exception.Should().BeOfType<OperationCanceledException>();
+    }
+
+    [Fact(DisplayName = $"{nameof(HttpJsonSender)} returns true on success sending")]
+    [Trait("Category", "Unit")]
+    public async Task HttpJsonSenderReturnsTrueOnSuccessSending()
+    {
+        // Arrange
+        var clientProxy = new Mock<IHttpClientProxy>(MockBehavior.Strict);
+        var logger = new Mock<ILogger<HttpJsonSender>>();
+        var sender = new HttpJsonSender(clientProxy.Object, logger.Object);
+        using var cts = new CancellationTokenSource();
+        var url = new Uri("http://example.com");
+        var data = "test";
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock.Protected().Setup<Task<HttpResponseMessage>>(
+                "SendAsync", 
+                ItExpr.Is<HttpRequestMessage>(request =>
+                    request.Method == HttpMethod.Post && 
+                    request.RequestUri!.Equals(url)), 
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(
+                new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent("mocked API response")
+                });
+        using var httpClient = new HttpClient(handlerMock.Object);
+        clientProxy.Setup(c => 
+                c.SenderClient).Returns(()=>httpClient);
+        
+        // Act
+        var result = await sender.SendAsync(data, url, cts.Token);
+        
+        // Assert
+        result.Should().BeTrue();
+    }
+    
+    [Fact(DisplayName = $"{nameof(HttpJsonSender)} returns false on failed sending")]
+    [Trait("Category", "Unit")]
+    public async Task HttpJsonSenderReturnsFalseOnErrorSending()
+    {
+        // Arrange
+        var clientProxy = new Mock<IHttpClientProxy>(MockBehavior.Strict);
+        var logger = new Mock<ILogger<HttpJsonSender>>();
+        var sender = new HttpJsonSender(clientProxy.Object, logger.Object);
+        using var cts = new CancellationTokenSource();
+        var url = new Uri("http://example.com");
+        var data = "test";
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock.Protected().Setup<Task<HttpResponseMessage>>(
+                "SendAsync", 
+                ItExpr.Is<HttpRequestMessage>(request =>
+                    request.Method == HttpMethod.Post && 
+                    request.RequestUri!.Equals(url)), 
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(
+                new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Content = new StringContent("mocked API response")
+                });
+        using var httpClient = new HttpClient(handlerMock.Object);
+        clientProxy.Setup(c => 
+            c.SenderClient).Returns(()=>httpClient);
+        
+        // Act
+        var result = await sender.SendAsync(data, url, cts.Token);
+        
+        // Assert
+        result.Should().BeFalse();
     }
 }
