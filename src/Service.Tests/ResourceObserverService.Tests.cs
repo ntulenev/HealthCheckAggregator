@@ -13,7 +13,10 @@ public class ResourceObserverServiceTests
         var resourceObserver = new Mock<IResourcesObserver>(MockBehavior.Strict);
 
         // Act
-        var exception = Record.Exception(() => { _ = new ResourceObserverService(resourceObserver.Object); });
+        var exception = Record.Exception(() =>
+        {
+            _ = new ResourceObserverService(resourceObserver.Object);
+        });
 
         // Assert
         exception.Should().BeNull();
@@ -25,11 +28,57 @@ public class ResourceObserverServiceTests
     {
         // Arrange
         IResourcesObserver resourceObserver = null!;
-        
+
         // Act
-        var exception = Record.Exception(() => { _ = new ResourceObserverService(resourceObserver); });
-        
+        var exception = Record.Exception(() =>
+        {
+            _ = new ResourceObserverService(resourceObserver);
+        });
+
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
+    }
+
+    [Fact(DisplayName = $"{nameof(ResourceObserverService)} can be started")]
+    [Trait("Category", "Unit")]
+    public async Task ResourceObserverServiceCanBeStarted()
+    {
+        // Arrange
+        var resourceObserver = new Mock<IResourcesObserver>(MockBehavior.Strict);
+        using var stoppingToken = new CancellationTokenSource();
+        var service = new ResourceObserverService(resourceObserver.Object);
+        var runCount = 0;
+        resourceObserver.Setup(x =>
+                x.ObserveAsync(It.IsAny<CancellationToken>()))
+            .Returns(() => Task.CompletedTask)
+            .Callback(() => runCount++);
+
+        // Act
+        await service.StartAsync(stoppingToken.Token);
+
+        // Assert
+        runCount.Should().Be(1);
+    }
+
+    [Fact(DisplayName = $"{nameof(ResourceObserverService)} can be stopped correctly")]
+    [Trait("Category", "Unit")]
+    public async Task ResourceObserverServiceCanBeStoppedCorrectly()
+    {
+        // Arrange
+        var resourceObserver = new Mock<IResourcesObserver>(MockBehavior.Strict);
+        using var stoppingToken = new CancellationTokenSource();
+        var service = new ResourceObserverService(resourceObserver.Object);
+        resourceObserver.Setup(x =>
+                x.ObserveAsync(It.IsAny<CancellationToken>()))
+            .Returns(() => Task.CompletedTask);
+        
+        // Act
+        var exception = await Record.ExceptionAsync(async () =>
+        {
+            await service.StopAsync(stoppingToken.Token);
+        });
+
+        // Assert
+        exception.Should().BeNull();
     }
 }
