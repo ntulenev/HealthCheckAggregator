@@ -53,4 +53,25 @@ public class SenderServiceTests
         // Assert
         runCount.Should().Be(1);
     }
+
+
+    [Fact(DisplayName = $"{nameof(SenderService)} stops correctly")]
+    [Trait("Category", "Unit")]
+    public async Task SenderServiceStopsCorrectly()
+    {
+        // Arrange
+        var reportProcessor = new Mock<IReportProcessor>(MockBehavior.Strict);
+        using var stoppingToken = new CancellationTokenSource();
+        using var senderService = new SenderService(reportProcessor.Object);
+        reportProcessor.Setup(x =>
+                x.ProcessAsync(It.IsAny<CancellationToken>()))
+            .Returns(() => Task.CompletedTask);
+        await senderService.StartAsync(stoppingToken.Token);
+
+        // Act
+        var exception = await Record.ExceptionAsync(async () => { await senderService.StopAsync(stoppingToken.Token); });
+
+        // Assert
+        exception.Should().BeNull();
+    }
 }
