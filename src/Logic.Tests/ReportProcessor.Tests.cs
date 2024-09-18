@@ -6,8 +6,6 @@ using Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-using FluentAssertions;
-
 namespace Logic.Tests;
 
 public class ReportProcessorTests
@@ -74,7 +72,7 @@ public class ReportProcessorTests
         exception.Should().BeOfType<ArgumentNullException>();
     }
 
-    [Fact(DisplayName = $"{nameof(ReportProcessor)} can't be created with null healthcheck state")]
+    [Fact(DisplayName = $"{nameof(ReportProcessor)} can't be created with null health check state")]
     [Trait("Category", "Unit")]
     public void CannotBeCreatedWithNullHealthCheckState()
     {
@@ -146,8 +144,8 @@ public class ReportProcessorTests
         // Arrange
         var reportBuildCount = 0;
         using var cancellationTokenSource = new CancellationTokenSource();
-        var report = new HealthCheckReport(new[]
-        {
+        var report = new HealthCheckReport(
+        [
             new ResourceHealthCheck(
                 new ResourceName("test"),
                 TimeSpan.FromMicroseconds(1),
@@ -155,7 +153,7 @@ public class ReportProcessorTests
                     new Uri("http://example.com"),
                     TimeSpan.FromMicroseconds(1),
                     TimeSpan.FromMicroseconds(1)))
-        });
+        ]);
         var tcs = new TaskCompletionSource();
         var config = new Mock<IOptions<ReportProcessorConfiguration>>(MockBehavior.Strict);
         config.Setup(x => x.Value)
@@ -205,10 +203,10 @@ public class ReportProcessorTests
                 TimeSpan.FromDays(1),
                 TimeSpan.FromDays(1)));
         reportItem.Update();
-        var report = new HealthCheckReport(new[]
-        {
+        var report = new HealthCheckReport(
+        [
             reportItem
-        });
+        ]);
         var tcs = new TaskCompletionSource();
         var config = new Mock<IOptions<ReportProcessorConfiguration>>(MockBehavior.Strict);
         config.Setup(x => x.Value)

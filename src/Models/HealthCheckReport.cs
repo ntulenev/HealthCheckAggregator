@@ -1,7 +1,7 @@
 ﻿namespace Models;
 
 /// <summary>
-/// Aggregated healthcheck report.
+/// Aggregated health check report.
 /// </summary>
 public sealed class HealthCheckReport
 {

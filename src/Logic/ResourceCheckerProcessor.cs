@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 namespace Logic;
 
 /// <summary>
-/// Checks the resource healthcheck.
+/// Checks the resource health check.
 /// </summary>
 public sealed class ResourceCheckerProcessor : IResourceCheckerProcessor
 {

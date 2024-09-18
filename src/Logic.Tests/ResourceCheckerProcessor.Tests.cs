@@ -77,7 +77,7 @@ public class ResourceCheckerProcessorTests
         exception.Should().BeOfType<ArgumentNullException>();
     }
 
-    [Fact(DisplayName = $"{nameof(ResourceCheckerProcessor)} cant be created without healthcheck")]
+    [Fact(DisplayName = $"{nameof(ResourceCheckerProcessor)} cant be created without health check")]
     [Trait("Category", "Unit")]
     public void ResourceCheckerProcessorCannotBeCreatedWithoutHealthCheck()
     {

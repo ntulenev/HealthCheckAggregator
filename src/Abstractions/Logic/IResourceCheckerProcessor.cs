@@ -1,12 +1,12 @@
 ﻿namespace Abstractions.Logic;
 
 /// <summary>
-/// Process resources healthchecks.
+/// Process resources health checks.
 /// </summary>
 public interface IResourceCheckerProcessor
 {
     /// <summary>
-    /// Rusn process resources healthchecks.
+    /// Run process resources health checks.
     /// </summary>
     /// <param name="ct">Token for cancel.</param>
     public Task ProcessAsync(CancellationToken ct);

@@ -9,16 +9,16 @@ using Microsoft.Extensions.Options;
 namespace Logic;
 
 /// <summary>
-/// Processor that periodically sends healthcheck reports.
+/// Processor that periodically sends health check reports.
 /// </summary>
 public sealed class ReportProcessor : IReportProcessor
 {
     /// <summary>
     /// Creates new instance of <see cref="ReportProcessor"/>.
     /// </summary>
-    /// <param name="config">Processig config.</param>
+    /// <param name="config">Processing config.</param>
     /// <param name="logger">Processor logger.</param>
-    /// <param name="healthChecksState">Healthchecks state.</param>
+    /// <param name="healthChecksState">Health checks state.</param>
     /// <param name="reportSender">Report sender.</param>
     /// <exception cref="ArgumentNullException">Throws if any of 
     /// params is null.</exception>
@@ -56,7 +56,7 @@ public sealed class ReportProcessor : IReportProcessor
 
             if (report.IsUnhealthy)
             {
-                _logger.LogWarning("All resources in the report {@report} are unhealthy. Skip sending healthcheck", report);
+                _logger.LogWarning("All resources in the report {@report} are unhealthy. Skip sending health check", report);
             }
             else
             {

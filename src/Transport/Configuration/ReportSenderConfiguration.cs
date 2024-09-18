@@ -11,7 +11,7 @@ public sealed class ReportSenderConfiguration
     public required Uri Url { get; init; }
 
     /// <summary>
-    /// Timout for generating healthcheck reports.
+    /// Timeout for generating health check reports.
     /// </summary>
     public required TimeSpan Timeout { get; init; }
 }

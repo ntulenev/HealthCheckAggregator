@@ -2,12 +2,12 @@
 namespace Abstractions.Logic;
 
 /// <summary>
-/// Checks the resource healthcheck.
+/// Checks the resource health check.
 /// </summary>
 public interface IResourceChecker
 {
     /// <summary>
-    /// Checks the resource healthcheck.
+    /// Checks the resource health check.
     /// </summary>
     /// <param name="resouce">Resource to check.</param></param>
     /// <param name="ct">Token for cancel.</param>

@@ -3,7 +3,7 @@
 namespace Transport.Models;
 
 /// <summary>
-/// Aggregated healthcheck report DTO.
+/// Aggregated health check report DTO.
 /// </summary>
 [JsonObject(MemberSerialization.OptIn)]
 public sealed class HealthCheckReport

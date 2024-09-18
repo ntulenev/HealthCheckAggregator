@@ -11,7 +11,7 @@ public sealed class ResourceConfiguration
     public required string Name { get; init; }
 
     /// <summary>
-    /// Resource Healthcheck expiration time.
+    /// Resource Health check expiration time.
     /// </summary>
     public required TimeSpan ExpirationPeriod { get; init; }
 
@@ -21,12 +21,12 @@ public sealed class ResourceConfiguration
     public required Uri Url { get; init; }
 
     /// <summary>
-    /// Resource Healthcheck check interval.
+    /// Resource Health check check interval.
     /// </summary>
     public required TimeSpan CheckInterval { get; init; }
 
     /// <summary>
-    /// Resource Healthcheck timeout.
+    /// Resource Health check timeout.
     /// </summary>
     public required TimeSpan Timeout { get; init; }
 }

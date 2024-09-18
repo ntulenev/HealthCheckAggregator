@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace Logic;
 
 /// <summary>
-/// Observes resources healthchecks.
+/// Observes resources health checks.
 /// </summary>
 public sealed class ResourcesObserver : IResourcesObserver
 {

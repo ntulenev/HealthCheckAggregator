@@ -1,12 +1,12 @@
 ﻿namespace Models;
 
 /// <summary>
-/// Report item about resource healthcheck.
+/// Report item about resource health check.
 /// </summary>
 public sealed class HealthCheckReportItem
 {
     /// <summary>
-    /// Resournce name.
+    /// Resource name.
     /// </summary>
     public ResourceName ResourceName { get; }
 

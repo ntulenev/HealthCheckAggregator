@@ -9,7 +9,7 @@ using System.Collections.Frozen;
 namespace Logic;
 
 /// <summary>
-/// Healthchecks state.
+/// Health checks state.
 /// </summary>
 public sealed class HealthChecksState : IHealthChecksState
 {

@@ -1,7 +1,7 @@
 ﻿namespace Models;
 
 /// <summary>
-/// Healthcheck model for resource.
+/// Health check model for resource.
 /// </summary>
 public sealed class ResourceHealthCheck
 {
@@ -16,7 +16,7 @@ public sealed class ResourceHealthCheck
     public ResourceRequestSettings RequestSettings { get; }
 
     /// <summary>
-    /// Healthcheck last update.
+    /// Health check last update.
     /// </summary>
     public DateTimeOffset LastUpdate
     {
@@ -31,15 +31,15 @@ public sealed class ResourceHealthCheck
     }
 
     /// <summary>
-    /// Healthcheck expiration period.
+    /// Health check expiration period.
     /// </summary>
     public TimeSpan ExpirationPeriod { get; }
 
     /// <summary>
-    /// Create resource healthcheck.
+    /// Create resource health check.
     /// </summary>
     /// <param name="name">Name of the resource.</param>
-    /// <param name="expirationPeriod">Healthcheck expiration period.</param>
+    /// <param name="expirationPeriod">Health check expiration period.</param>
     /// <param name="requestSettings">Settings to operate with resource.</param>
     /// <exception cref="ArgumentNullException">Throws if
     /// <paramref name="name"/> is null.</exception>
@@ -58,9 +58,9 @@ public sealed class ResourceHealthCheck
     }
 
     /// <summary>
-    /// Checks if healthcheck is expired.
+    /// Checks if health check is expired.
     /// </summary>
-    /// <returns>Healthcheck status.</returns>
+    /// <returns>Health check status.</returns>
     public ResourceStatus IsExpired()
     {
         if (LastUpdate + ExpirationPeriod >= DateTimeOffset.UtcNow)

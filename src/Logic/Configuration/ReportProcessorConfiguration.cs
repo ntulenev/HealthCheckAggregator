@@ -6,7 +6,7 @@
     public sealed class ReportProcessorConfiguration
     {
         /// <summary>
-        /// Healthcheck send interval.
+        /// Health check send interval.
         /// </summary>
         public required TimeSpan SendInterval { get; init; }
     }

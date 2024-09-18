@@ -16,8 +16,8 @@ public class HealthChecksStateTests
         options.Setup(x => x.Value)
             .Returns(new HealthChecksStateConfiguration
             {
-                Resources = new List<ResourceConfiguration>
-                {
+                Resources =
+                [
                     new()
                     {
                         Name = "Resource1",
@@ -34,7 +34,7 @@ public class HealthChecksStateTests
                         CheckInterval = TimeSpan.FromSeconds(15),
                         Timeout = TimeSpan.FromSeconds(7)
                     }
-                }
+                ]
             });
         var resourceHealthCheckFactory = new Func<ResourceConfiguration, ResourceHealthCheck>(config =>
         {
@@ -90,8 +90,8 @@ public class HealthChecksStateTests
         options.Setup(x => x.Value)
             .Returns(new HealthChecksStateConfiguration
             {
-                Resources = new List<ResourceConfiguration>
-                {
+                Resources =
+                [
                     new()
                     {
                         Name = "Resource1",
@@ -100,7 +100,7 @@ public class HealthChecksStateTests
                         CheckInterval = TimeSpan.FromSeconds(10),
                         Timeout = TimeSpan.FromSeconds(5)
                     }
-                }
+                ]
             });
         // Act
         var exception = Record.Exception(() =>
@@ -118,7 +118,7 @@ public class HealthChecksStateTests
         options.Setup(x => x.Value)
             .Returns(new HealthChecksStateConfiguration
             {
-                Resources = new List<ResourceConfiguration>()
+                Resources = []
             });
         var resourceHealthCheckFactory = new Func<ResourceConfiguration, ResourceHealthCheck>(config =>
         {
@@ -166,11 +166,11 @@ public class HealthChecksStateTests
         options.Setup(x => x.Value)
             .Returns(new HealthChecksStateConfiguration
             {
-                Resources = new List<ResourceConfiguration>
-                {
+                Resources =
+                [
                     hcConfig1,
                     hcConfig2
-                }
+                ]
             });
         var resourceHealthCheckFactory = new Func<ResourceConfiguration, ResourceHealthCheck>(config =>
         {
@@ -231,11 +231,11 @@ public class HealthChecksStateTests
         options.Setup(x => x.Value)
             .Returns(new HealthChecksStateConfiguration
             {
-                Resources = new List<ResourceConfiguration>
-                {
+                Resources =
+                [
                     hcConfig1,
                     hcConfig2
-                }
+                ]
             });
         var resourceHealthCheckFactory = new Func<ResourceConfiguration, ResourceHealthCheck>(config =>
         {

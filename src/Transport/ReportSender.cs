@@ -12,7 +12,7 @@ using TModel = Transport.Models;
 namespace Transport;
 
 /// <summary>
-/// Healthcheck report sender.
+/// Health check report sender.
 /// </summary>
 public sealed class ReportSender : IReportSender
 {

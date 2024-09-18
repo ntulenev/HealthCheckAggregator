@@ -44,8 +44,8 @@ public class HealthCheckReportSerializerTests
         var report = new HealthCheckReport
         {
             Created = testDate,
-            ReportItems = new List<HealthCheckReportItem>
-            {
+            ReportItems =
+            [
                 new()
                 {
                     ResourceName = "Resource 1",
@@ -56,7 +56,7 @@ public class HealthCheckReportSerializerTests
                     ResourceName = "Resource 2",
                     Status = ResourceStatus.Unhealthy
                 }
-            }
+            ]
         };
         
         // Act

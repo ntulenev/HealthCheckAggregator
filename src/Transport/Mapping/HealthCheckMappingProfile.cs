@@ -7,7 +7,7 @@ using TModel = Transport.Models;
 namespace Transport.Mapping
 {
     /// <summary>
-    /// Automapper profile for mapping Model layer to DTO.
+    /// Auto mapper profile for mapping Model layer to DTO.
     /// </summary>
     public sealed class HealthCheckMappingProfile : Profile
     {

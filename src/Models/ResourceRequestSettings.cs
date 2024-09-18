@@ -24,7 +24,7 @@ public sealed class ResourceRequestSettings
     /// Creates <see cref="ResourceRequestSettings"/>.
     /// </summary>
     /// <param name="url">Url.</param>
-    /// <param name="checkInterval">Healthcheck interval.</param>
+    /// <param name="checkInterval">Health check interval.</param>
     /// <param name="timeout">Request timeout.</param>
     /// <exception cref="ArgumentNullException">
     /// Throws if url is null.</exception>

@@ -7,7 +7,7 @@ using Newtonsoft.Json.Serialization;
 namespace Transport.Models;
 
 /// <summary>
-/// Report item about resource healthcheck DTO.
+/// Report item about resource health check DTO.
 /// </summary>
 [JsonObject(MemberSerialization.OptIn)]
 public sealed class HealthCheckReportItem

@@ -88,7 +88,7 @@ public static class RegistrationHelpers
     }
 
     /// <summary>
-    /// Register healthcheck sender logic.
+    /// Register health check sender logic.
     /// </summary>
     public static void RegisterSender(this IServiceCollection services, IConfiguration configuration)
     {

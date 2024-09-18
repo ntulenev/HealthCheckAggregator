@@ -15,8 +15,8 @@ public class HealthChecksStateConfigurationValidatorTests
         // Arrange
         var options = new HealthChecksStateConfiguration
         {
-            Resources = new List<ResourceConfiguration>
-            {
+            Resources =
+            [
                 new() {
                     Name = "Resource1",
                     ExpirationPeriod = TimeSpan.FromMinutes(5),
@@ -31,7 +31,7 @@ public class HealthChecksStateConfigurationValidatorTests
                     CheckInterval = TimeSpan.FromSeconds(30),
                     Timeout = TimeSpan.FromSeconds(10)
                 }
-            }
+            ]
         };
         var validator = new HealthChecksStateConfigurationValidator();
 
@@ -49,7 +49,7 @@ public class HealthChecksStateConfigurationValidatorTests
         // Arrange
         var options = new HealthChecksStateConfiguration
         {
-            Resources = new List<ResourceConfiguration>()
+            Resources = []
         };
         var validator = new HealthChecksStateConfigurationValidator();
 
@@ -87,8 +87,8 @@ public class HealthChecksStateConfigurationValidatorTests
         // Arrange
         var options = new HealthChecksStateConfiguration
         {
-            Resources = new List<ResourceConfiguration>
-            {
+            Resources =
+            [
                 new()
                 {
                     Name = "Resource1",
@@ -105,7 +105,7 @@ public class HealthChecksStateConfigurationValidatorTests
                     CheckInterval = TimeSpan.FromSeconds(35),
                     Timeout = TimeSpan.FromSeconds(15)
                 }
-            }
+            ]
         };
         var validator = new HealthChecksStateConfigurationValidator();
 
@@ -125,8 +125,8 @@ public class HealthChecksStateConfigurationValidatorTests
         // Arrange
         var options = new HealthChecksStateConfiguration
         {
-            Resources = new List<ResourceConfiguration>
-            {
+            Resources =
+            [
                 new()
                 {
                     Name = name,
@@ -135,7 +135,7 @@ public class HealthChecksStateConfigurationValidatorTests
                     CheckInterval = TimeSpan.FromSeconds(30),
                     Timeout = TimeSpan.FromSeconds(10)
                 }
-            }
+            ]
         };
         var validator = new HealthChecksStateConfigurationValidator();
 
@@ -154,8 +154,8 @@ public class HealthChecksStateConfigurationValidatorTests
         // Arrange
         var options = new HealthChecksStateConfiguration
         {
-            Resources = new List<ResourceConfiguration>
-            {
+            Resources =
+            [
                 new()
                 {
                     Name = "      ",
@@ -164,7 +164,7 @@ public class HealthChecksStateConfigurationValidatorTests
                     CheckInterval = TimeSpan.FromSeconds(30),
                     Timeout = TimeSpan.FromSeconds(10)
                 }
-            }
+            ]
         };
         var validator = new HealthChecksStateConfigurationValidator();
 
@@ -183,8 +183,8 @@ public class HealthChecksStateConfigurationValidatorTests
         // Arrange
         var options = new HealthChecksStateConfiguration
         {
-            Resources = new List<ResourceConfiguration>
-            {
+            Resources =
+            [
                 new()
                 {
                     Name = "Resource1",
@@ -193,7 +193,7 @@ public class HealthChecksStateConfigurationValidatorTests
                     CheckInterval = TimeSpan.FromSeconds(30),
                     Timeout = TimeSpan.FromSeconds(10)
                 }
-            }
+            ]
         };
         var validator = new HealthChecksStateConfigurationValidator();
 
@@ -212,8 +212,8 @@ public class HealthChecksStateConfigurationValidatorTests
         // Arrange
         var options = new HealthChecksStateConfiguration
         {
-            Resources = new List<ResourceConfiguration>
-            {
+            Resources =
+            [
                 new()
                 {
                     Name = "Resource1",
@@ -222,7 +222,7 @@ public class HealthChecksStateConfigurationValidatorTests
                     CheckInterval = TimeSpan.Zero,
                     Timeout = TimeSpan.FromSeconds(10)
                 }
-            }
+            ]
         };
         var validator = new HealthChecksStateConfigurationValidator();
 
@@ -241,8 +241,8 @@ public class HealthChecksStateConfigurationValidatorTests
         // Arrange
         var options = new HealthChecksStateConfiguration
         {
-            Resources = new List<ResourceConfiguration>
-            {
+            Resources =
+            [
                 new()
                 {
                     Name = "Resource1",
@@ -251,7 +251,7 @@ public class HealthChecksStateConfigurationValidatorTests
                     CheckInterval = TimeSpan.FromSeconds(30),
                     Timeout = TimeSpan.Zero
                 }
-            }
+            ]
         };
         var validator = new HealthChecksStateConfigurationValidator();
 
@@ -270,8 +270,8 @@ public class HealthChecksStateConfigurationValidatorTests
         // Arrange
         var options = new HealthChecksStateConfiguration
         {
-            Resources = new List<ResourceConfiguration>
-            {
+            Resources =
+            [
                 new()
                 {
                     Name = "Resource1",
@@ -280,7 +280,7 @@ public class HealthChecksStateConfigurationValidatorTests
                     CheckInterval = TimeSpan.FromSeconds(30),
                     Timeout = TimeSpan.FromSeconds(30)
                 }
-            }
+            ]
         };
         var validator = new HealthChecksStateConfigurationValidator();
 
