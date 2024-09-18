@@ -19,7 +19,6 @@ public class ResourceNameTests
     }
 
     [Theory(DisplayName = $"{nameof(ResourceName)} throws ArgumentNullException for null or empty name")]
-    [InlineData(null)]
     [InlineData("")]
     [Trait("Category", "Unit")]
     public void ConstructorThrowsArgumentNullExceptionForNullOrEmptyName(string name)

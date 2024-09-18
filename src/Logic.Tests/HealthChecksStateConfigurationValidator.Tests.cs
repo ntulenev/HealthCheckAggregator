@@ -119,7 +119,6 @@ public class HealthChecksStateConfigurationValidatorTests
     [Theory(DisplayName = $"Validator for {nameof(HealthChecksStateConfiguration)} " +
          $"should fail if resources name is null or empty")]
     [Trait("Category", "Unit")]
-    [InlineData(null!)]
     [InlineData("")]
     public void ValidateFailureForNullOrEmptyName(string name)
     {

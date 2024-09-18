@@ -96,7 +96,7 @@ public static class RegistrationHelpers
         services.AddSingleton<ISerializer<Transport.Models.HealthCheckReport, string>, HealthCheckReportSerializer>();
         services.AddSingleton<IReportSender, ReportSender>();
         services.AddSingleton<IRawSender<string>, HttpJsonSender>();
-        services.AddAutoMapper(cfg => cfg.AddProfile<HealthCheckMappingProfile>());
+        services.AddAutoMapper(typeof(HealthCheckMappingProfile));
         services.Configure<ReportSenderConfiguration>(configuration.GetSection(nameof(ReportSenderConfiguration)));
         services.AddSingleton<IValidateOptions<ReportSenderConfiguration>, ReportSenderConfigurationValidator>();
         services.Configure<ReportProcessorConfiguration>(configuration.GetSection(nameof(ReportProcessorConfiguration)));
