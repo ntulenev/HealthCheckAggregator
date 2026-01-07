@@ -39,16 +39,22 @@ public class SenderServiceTests
     {
         // Arrange
         var reportProcessor = new Mock<IReportProcessor>(MockBehavior.Strict);
+        var tcs = new TaskCompletionSource();
         using var stoppingToken = new CancellationTokenSource();
         using var senderService = new SenderService(reportProcessor.Object);
         var runCount = 0;
         reportProcessor.Setup(x =>
                 x.ProcessAsync(It.IsAny<CancellationToken>()))
             .Returns(() => Task.CompletedTask)
-            .Callback(() => runCount++);
+            .Callback(() =>
+            {
+                tcs.TrySetResult();
+                runCount++;
+            });
 
         // Act
         await senderService.StartAsync(stoppingToken.Token);
+        await tcs.Task; // Because of https://github.com/dotnet/runtime/pull/116283
 
         // Assert
         runCount.Should().Be(1);

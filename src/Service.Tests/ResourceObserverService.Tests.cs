@@ -45,17 +45,22 @@ public class ResourceObserverServiceTests
     {
         // Arrange
         var resourceObserver = new Mock<IResourcesObserver>(MockBehavior.Strict);
+        var tcs = new TaskCompletionSource();
         using var stoppingToken = new CancellationTokenSource();
         var service = new ResourceObserverService(resourceObserver.Object);
         var runCount = 0;
         resourceObserver.Setup(x =>
                 x.ObserveAsync(It.IsAny<CancellationToken>()))
             .Returns(() => Task.CompletedTask)
-            .Callback(() => runCount++);
+            .Callback(() =>
+            {
+                tcs.TrySetResult(); 
+                runCount++;
+            });
 
         // Act
         await service.StartAsync(stoppingToken.Token);
-
+        await tcs.Task; // Because of https://github.com/dotnet/runtime/pull/116283
         // Assert
         runCount.Should().Be(1);
     }
@@ -71,7 +76,7 @@ public class ResourceObserverServiceTests
         resourceObserver.Setup(x =>
                 x.ObserveAsync(It.IsAny<CancellationToken>()))
             .Returns(() => Task.CompletedTask);
-        
+
         // Act
         var exception = await Record.ExceptionAsync(async () =>
         {
