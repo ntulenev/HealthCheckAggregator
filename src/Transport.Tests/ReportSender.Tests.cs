@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -250,7 +250,7 @@ public class ReportSenderTests
             serializer.Object,
             config.Object);
         using var cts = new CancellationTokenSource();
-        cts.Cancel();
+        await cts.CancelAsync();
         var url = new Uri("https://example.com");
         var checkInterval = TimeSpan.FromSeconds(20);
         var timeout = TimeSpan.FromSeconds(60);
@@ -313,19 +313,19 @@ public class ReportSenderTests
         var dtoReport = new TModel.HealthCheckReport
         {
             Created = report.Created,
-            ReportItems = new[]
-            {
+            ReportItems =
+            [
                 new TModel.HealthCheckReportItem()
                 {
                     ResourceName = res1.Value,
                     Status = ResourceStatus.Healthy
                 }
-            }
+            ]
         };
         mapper.Setup(x => x.Map<TModel.HealthCheckReport>(report))
             .Returns(() => dtoReport);
         var payload = "test";
-        serializer.Setup(x => x.Serialize((dtoReport))).Returns(payload);
+        serializer.Setup(x => x.Serialize(dtoReport)).Returns(payload);
         var sendsCount = 0;
         rawSender.Setup(x => x.SendAsync(payload, configData.Url, cts.Token))
             .Returns(() => Task.FromResult(isHttpSuccess))
