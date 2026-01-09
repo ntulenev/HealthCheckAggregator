@@ -1,8 +1,7 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 using Models;
 using HealthCheckReport = Transport.Models.HealthCheckReport;
-using HealthCheckReportItem = Transport.Models.HealthCheckReportItem;
 
 namespace Transport.Tests;
 
@@ -58,10 +57,10 @@ public class HealthCheckReportSerializerTests
                 }
             ]
         };
-        
+
         // Act
         var result = serializer.Serialize(report);
-        
+
         // Assert
         result.Should().NotBeNullOrEmpty();
         var deserializedReport = JsonConvert.DeserializeObject<HealthCheckReport>(result)!;
