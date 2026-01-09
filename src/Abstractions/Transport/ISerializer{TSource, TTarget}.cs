@@ -1,4 +1,4 @@
-﻿namespace Abstractions.Transport;
+namespace Abstractions.Transport;
 
 /// <summary>
 /// Provides contract of serialization from <typeparamref name="TSource"/> to <typeparamref name="TTarget"/>.
@@ -12,5 +12,5 @@ public interface ISerializer<TSource, TTarget>
     /// </summary>
     /// <param name="source">Object that should be serialized.</param>
     /// <returns>Serialized result.</returns>
-    public TTarget Serialize(TSource source);
+    TTarget Serialize(TSource source);
 }
