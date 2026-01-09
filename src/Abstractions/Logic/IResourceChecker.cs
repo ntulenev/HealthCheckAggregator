@@ -1,4 +1,4 @@
-﻿using Models;
+using Models;
 namespace Abstractions.Logic;
 
 /// <summary>
@@ -9,7 +9,7 @@ public interface IResourceChecker
     /// <summary>
     /// Checks the resource health check.
     /// </summary>
-    /// <param name="resouce">Resource to check.</param></param>
+    /// <param name="resource">Resource to check.</param>
     /// <param name="ct">Token for cancel.</param>
-    public Task CheckAsync(ResourceHealthCheck resouce, CancellationToken ct);
+    Task CheckAsync(ResourceHealthCheck resource, CancellationToken ct);
 }
