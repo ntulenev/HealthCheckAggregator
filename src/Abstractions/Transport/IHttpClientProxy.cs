@@ -1,4 +1,4 @@
-﻿namespace Abstractions.Transport;
+namespace Abstractions.Transport;
 
 /// <summary>
 /// Wrapper around <see cref="HttpClient"/>,
@@ -9,10 +9,10 @@ public interface IHttpClientProxy
     /// <summary>
     /// Property containing a configured <see cref="HttpClient"/> for send aggregated health check.
     /// </summary>
-    public HttpClient SenderClient { get; }
+    HttpClient SenderClient { get; }
 
     /// <summary>
     /// Creates containing a configured <see cref="HttpClient"/> for pull health checks form resources.
     /// </summary>
-    public HttpClient ResourceClientFactory(TimeSpan timeout);
+    HttpClient ResourceClientFactory(TimeSpan timeout);
 }
