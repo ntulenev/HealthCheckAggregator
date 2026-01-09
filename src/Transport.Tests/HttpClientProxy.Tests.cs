@@ -1,4 +1,4 @@
-﻿namespace Transport.Tests;
+namespace Transport.Tests;
 
 public class HttpClientProxyTests
 {
@@ -8,7 +8,10 @@ public class HttpClientProxyTests
     {
         // Arrange
         using var responseHttpClient = new HttpClient();
-        Func<TimeSpan, HttpClient> resourceClientFactory = timeout => new HttpClient();
+        static HttpClient resourceClientFactory(TimeSpan timeout)
+        {
+            return new HttpClient();
+        }
 
         // Act
         var exception = Record.Exception(() =>
@@ -25,7 +28,10 @@ public class HttpClientProxyTests
     public void HttpClientProxyCannotBeCreatedWithoutHttpClient()
     {
         // Arrange
-        Func<TimeSpan, HttpClient> resourceClientFactory = timeout => new HttpClient();
+        static HttpClient resourceClientFactory(TimeSpan timeout)
+        {
+            return new HttpClient();
+        }
         // Act
         var exception = Record.Exception(() =>
         {
@@ -59,7 +65,11 @@ public class HttpClientProxyTests
     {
         // Arrange
         using var responseHttpClient = new HttpClient();
-        Func<TimeSpan, HttpClient> resourceClientFactory = timeout => new HttpClient();
+        static HttpClient resourceClientFactory(TimeSpan timeout)
+        {
+            return new HttpClient();
+        }
+
         var httpClientProxy = new HttpClientProxy(responseHttpClient, resourceClientFactory);
 
         // Act
@@ -79,7 +89,7 @@ public class HttpClientProxyTests
 
         HttpClient ResourceClientFactory(TimeSpan timeout)
         {
-            if (timeout == TimeSpan.FromSeconds((10)))
+            if (timeout == TimeSpan.FromSeconds(10))
             {
                 callCount++;
                 return new HttpClient();
