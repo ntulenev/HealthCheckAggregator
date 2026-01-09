@@ -1,4 +1,4 @@
-﻿using Abstractions.Transport;
+using Abstractions.Transport;
 
 using Microsoft.Extensions.Logging;
 
@@ -44,6 +44,7 @@ public sealed class HttpJsonSender : IRawSender<string>
            Encoding.UTF8,
            CONTENT_TYPE);
 
+#pragma warning disable CA1031 // Do not catch general exception types
         try
         {
             var result = await _clientProxy.SenderClient.PostAsync(url, content, ct)
@@ -55,7 +56,7 @@ public sealed class HttpJsonSender : IRawSender<string>
             }
             else
             {
-                _logger.LogWarning("Failed to send data to {url}. Status code: {code}. Reason: {reason}",
+                _logger.LogWarning("Failed to send data to {Url}. Status code: {Code}. Reason: {Reason}",
                                   url,
                                   result.StatusCode,
                                   result.ReasonPhrase);
@@ -63,8 +64,9 @@ public sealed class HttpJsonSender : IRawSender<string>
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to send data to {url}.", url);
+            _logger.LogWarning(ex, "Failed to send data to {Url}.", url);
         }
+#pragma warning restore CA1031 // Do not catch general exception types
 
         return false;
     }
