@@ -1,13 +1,12 @@
-﻿namespace Logic.Configuration
+namespace Logic.Configuration;
+
+/// <summary>
+/// <see cref="ReportProcessor"/> configuration.
+/// </summary>
+public sealed class ReportProcessorConfiguration
 {
     /// <summary>
-    /// <see cref="ReportProcessor"/> configuration.
+    /// Health check send interval.
     /// </summary>
-    public sealed class ReportProcessorConfiguration
-    {
-        /// <summary>
-        /// Health check send interval.
-        /// </summary>
-        public required TimeSpan SendInterval { get; init; }
-    }
+    public required TimeSpan SendInterval { get; init; }
 }
