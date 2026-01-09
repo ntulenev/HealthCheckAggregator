@@ -1,4 +1,4 @@
-﻿using Abstractions.Logic;
+using Abstractions.Logic;
 using Abstractions.State;
 using Abstractions.Transport;
 using Models;
@@ -35,7 +35,9 @@ public static class RegistrationHelpers
     public static void RegisterState(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IHealthChecksState, HealthChecksState>();
+#pragma warning disable CA1062 // Validate arguments of public methods
         services.Configure<HealthChecksStateConfiguration>(configuration.GetSection(nameof(HealthChecksStateConfiguration)));
+#pragma warning restore CA1062 // Validate arguments of public methods
         services.AddSingleton<IValidateOptions<HealthChecksStateConfiguration>, HealthChecksStateConfigurationValidator>();
         services.AddSingleton<Func<ResourceConfiguration, ResourceHealthCheck>>(conf =>
         {
@@ -97,7 +99,9 @@ public static class RegistrationHelpers
         services.AddSingleton<IReportSender, ReportSender>();
         services.AddSingleton<IRawSender<string>, HttpJsonSender>();
         services.AddAutoMapper(cfg => cfg.AddProfile<HealthCheckMappingProfile>());
+#pragma warning disable CA1062 // Validate arguments of public methods
         services.Configure<ReportSenderConfiguration>(configuration.GetSection(nameof(ReportSenderConfiguration)));
+#pragma warning restore CA1062 // Validate arguments of public methods
         services.AddSingleton<IValidateOptions<ReportSenderConfiguration>, ReportSenderConfigurationValidator>();
         services.Configure<ReportProcessorConfiguration>(configuration.GetSection(nameof(ReportProcessorConfiguration)));
         services.AddSingleton<IValidateOptions<ReportProcessorConfiguration>, ReportProcessorConfigurationValidator>();
