@@ -1,4 +1,4 @@
-﻿using Models;
+using Models;
 
 namespace Abstractions.Transport;
 
@@ -14,5 +14,5 @@ public interface IRawResourceChecker
     /// <param name="url">Request URL.</param>
     /// <param name="ct">token for cancel.</param>
     /// <returns>Health check status.</returns>
-    public Task<ResourceStatus> CheckAsync(TimeSpan timeout, Uri url, CancellationToken ct);
+    Task<ResourceStatus> CheckAsync(TimeSpan timeout, Uri url, CancellationToken ct);
 }
