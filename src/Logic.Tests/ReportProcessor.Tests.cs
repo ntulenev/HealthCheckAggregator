@@ -1,4 +1,4 @@
-﻿using Abstractions.State;
+using Abstractions.State;
 using Abstractions.Transport;
 using Logic.Configuration;
 using Models;
@@ -125,13 +125,11 @@ public class ReportProcessorTests
         var reportSender = Mock.Of<IReportSender>(MockBehavior.Strict);
         var processor = new ReportProcessor(config.Object, logger, healthChecksState, reportSender);
         using var cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.Cancel();
+        await cancellationTokenSource.CancelAsync();
 
         // Act
         var exception = await Record.ExceptionAsync(async () =>
-        {
-            await processor.ProcessAsync(cancellationTokenSource.Token);
-        });
+        await processor.ProcessAsync(cancellationTokenSource.Token));
 
         // Assert
         exception.Should().BeOfType<OperationCanceledException>();
@@ -178,9 +176,7 @@ public class ReportProcessorTests
 
         // Act
         var exception = await Record.ExceptionAsync(async () =>
-        {
-            await processor.ProcessAsync(cancellationTokenSource.Token);
-        });
+            await processor.ProcessAsync(cancellationTokenSource.Token));
 
         // Assert
         reportBuildCount.Should().Be(1);
@@ -217,7 +213,7 @@ public class ReportProcessorTests
         var logger = Mock.Of<ILogger<ReportProcessor>>();
         var healthChecksState = new Mock<IHealthChecksState>(MockBehavior.Strict);
         healthChecksState.Setup(x => x.BuildReport())
-            .Returns(report).Callback(() => { reportBuildCount++; });
+            .Returns(report).Callback(() => reportBuildCount++);
         var reportSender = new Mock<IReportSender>(MockBehavior.Strict);
         reportSender.Setup(x =>
                 x.SendAsync(report, cancellationTokenSource.Token))
@@ -234,10 +230,8 @@ public class ReportProcessorTests
             reportSender.Object);
 
         // Act
-        var exception = await Record.ExceptionAsync(async () =>
-        {
-            await processor.ProcessAsync(cancellationTokenSource.Token);
-        });
+        var exception = await Record.ExceptionAsync(async ()
+            => await processor.ProcessAsync(cancellationTokenSource.Token));
 
         // Assert
         reportBuildCount.Should().Be(1);
