@@ -20,4 +20,4 @@ var app = builder.Build();
 app.UseHealthChecks("/hc");
 app.UseHttpsRedirection();
 
-await app.RunAsync();
+await app.RunAsync().ConfigureAwait(false);
