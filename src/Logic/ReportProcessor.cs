@@ -1,6 +1,7 @@
-﻿using Abstractions.Logic;
+using Abstractions.Logic;
 using Abstractions.State;
 using Abstractions.Transport;
+
 using Logic.Configuration;
 
 using Microsoft.Extensions.Logging;
@@ -49,7 +50,7 @@ public sealed class ReportProcessor : IReportProcessor
         {
             ct.ThrowIfCancellationRequested();
 
-            _logger.BeginScope("Report processing");
+            _ = _logger.BeginScope("Report processing");
             _logger.LogInformation("Start processing report");
             _logger.LogDebug("Building report");
             var report = _healthChecksState.BuildReport();
