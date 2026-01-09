@@ -1,4 +1,4 @@
-﻿using Models;
+using Models;
 using Abstractions.Transport;
 
 using Microsoft.Extensions.Logging;
@@ -48,6 +48,7 @@ public sealed class HttpRawResourceChecker : IRawResourceChecker
 
         using var client = _clientProxy.ResourceClientFactory(timeout);
 
+#pragma warning disable CA1031 // Do not catch general exception types
         try
         {
             var response = await client.GetAsync(url, ct)
@@ -60,8 +61,9 @@ public sealed class HttpRawResourceChecker : IRawResourceChecker
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Error while checking resource {url}.", url);
+            _logger.LogWarning(ex, "Error while checking resource {Url}.", url);
         }
+#pragma warning restore CA1031 // Do not catch general exception types
 
         return ResourceStatus.Unhealthy;
     }
