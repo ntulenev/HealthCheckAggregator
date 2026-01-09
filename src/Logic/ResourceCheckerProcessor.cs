@@ -1,4 +1,4 @@
-﻿using Models;
+using Models;
 using Abstractions.Logic;
 
 using Microsoft.Extensions.Logging;
@@ -40,10 +40,11 @@ public sealed class ResourceCheckerProcessor : IResourceCheckerProcessor
     {
         while (true)
         {
-            using var _ = _logger.BeginScope("Resource {resource}.", _resourceHealthCheck.ResourceName);
+            using var _ = _logger.BeginScope("Resource {Resource}.", _resourceHealthCheck.ResourceName);
 
             ct.ThrowIfCancellationRequested();
 
+#pragma warning disable CA1031 // Do not catch general exception types
             try
             {
 
@@ -53,8 +54,9 @@ public sealed class ResourceCheckerProcessor : IResourceCheckerProcessor
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Error while checking resource {resource}.", _resourceHealthCheck.ResourceName);
+                _logger.LogWarning(ex, "Error while checking resource {Resource}.", _resourceHealthCheck.ResourceName);
             }
+#pragma warning restore CA1031 // Do not catch general exception types
 
             await Task.Delay(_resourceHealthCheck.RequestSettings.CheckInterval, ct)
                       .ConfigureAwait(false);
