@@ -1,4 +1,4 @@
-﻿namespace Abstractions.Transport;
+namespace Abstractions.Transport;
 
 /// <summary>
 /// Send data to the destination.
@@ -12,5 +12,5 @@ public interface IRawSender<TData>
     /// <param name="data">Data to send.</param>
     /// <param name="url">Destination url.</param>
     /// <param name="ct">Token for cancel the operation.</param>
-    public Task<bool> SendAsync(TData data, Uri url, CancellationToken ct);
+    Task<bool> SendAsync(TData data, Uri url, CancellationToken ct);
 }
