@@ -1,4 +1,4 @@
-﻿namespace Models;
+namespace Models;
 
 /// <summary>
 /// Aggregated health check report.
@@ -32,15 +32,18 @@ public sealed class HealthCheckReport
     {
         ArgumentNullException.ThrowIfNull(resourceHealthChecks);
 
+#pragma warning disable CA1851 // Possible multiple enumerations of 'IEnumerable' collection
         if (!resourceHealthChecks.Any())
         {
             throw new ArgumentException("Resource health checks cannot be empty.",
                         nameof(resourceHealthChecks));
         }
+#pragma warning restore CA1851 // Possible multiple enumerations of 'IEnumerable' collection
 
-        _reportItems = resourceHealthChecks.Select(
-                                x => new HealthCheckReportItem(x.ResourceName, x.IsExpired()))
-                                .ToList();
+#pragma warning disable CA1851 // Possible multiple enumerations of 'IEnumerable' collection
+        _reportItems = [.. resourceHealthChecks.Select(
+                                x => new HealthCheckReportItem(x.ResourceName, x.IsExpired()))];
+#pragma warning restore CA1851 // Possible multiple enumerations of 'IEnumerable' collection
 
         Created = DateTimeOffset.UtcNow;
     }
