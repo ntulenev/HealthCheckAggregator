@@ -18,5 +18,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
+	
+	<PropertyGroup>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
 
 </Project>
