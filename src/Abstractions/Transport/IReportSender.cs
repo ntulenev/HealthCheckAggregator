@@ -1,4 +1,4 @@
-﻿using Models;
+using Models;
 
 namespace Abstractions.Transport;
 
@@ -12,5 +12,5 @@ public interface IReportSender
     /// </summary>
     /// <param name="report">Health checks report.</param>
     /// <param name="ct">Token for cancel the operation.</param>
-    public Task SendAsync(HealthCheckReport report, CancellationToken ct);
+    Task SendAsync(HealthCheckReport report, CancellationToken ct);
 }
