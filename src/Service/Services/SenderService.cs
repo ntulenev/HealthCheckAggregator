@@ -1,4 +1,4 @@
-﻿using Abstractions.Logic;
+using Abstractions.Logic;
 
 namespace Service.Services;
 
@@ -20,7 +20,12 @@ public sealed class SenderService : BackgroundService
         _reportProcessor = reportProcessor;
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    /// <summary>
+    /// Executes the background service operation asynchronously.
+    /// </summary>
+    /// <param name="stoppingToken">A cancellation token that can be used to signal the request to stop the operation.</param>
+    /// <returns>A task that represents the asynchronous execution operation.</returns>
+    protected async override Task ExecuteAsync(CancellationToken stoppingToken)
                                 => await _reportProcessor.ProcessAsync(stoppingToken)
                                                          .ConfigureAwait(false);
 
