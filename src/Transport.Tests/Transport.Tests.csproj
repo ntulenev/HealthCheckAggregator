@@ -29,8 +29,19 @@
         </PackageReference>
     </ItemGroup>
 
+	<PropertyGroup>
+		<NoWarn>CS1591,CA2007,IDE0058,IDE1006</NoWarn>
+	</PropertyGroup>
+	
     <ItemGroup>
       <ProjectReference Include="..\Transport\Transport.csproj" />
     </ItemGroup>
+	
+	<PropertyGroup>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
 
 </Project>
