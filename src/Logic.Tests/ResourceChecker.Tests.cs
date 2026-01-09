@@ -1,4 +1,4 @@
-﻿using Abstractions.Transport;
+using Abstractions.Transport;
 
 using Microsoft.Extensions.Logging;
 
@@ -81,7 +81,7 @@ public class ResourceCheckerTests
         var logger = new Mock<ILogger<ResourceChecker>>(MockBehavior.Strict).Object;
         var resourceChecker = new ResourceChecker(rawChecker, logger);
         using var cts = new CancellationTokenSource();
-        cts.Cancel();
+        await cts.CancelAsync();
         var targetResource = new ResourceHealthCheck(
             new ResourceName("test"),
             TimeSpan.FromMicroseconds(1),
@@ -153,7 +153,7 @@ public class ResourceCheckerTests
                 targetUri,
                 TimeSpan.FromMicroseconds(1),
                 timeout));
-        
+
         // Act
         await resourceChecker.CheckAsync(targetResource, cts.Token);
 
