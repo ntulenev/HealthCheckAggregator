@@ -1,4 +1,4 @@
-﻿using Models;
+using Models;
 using Transport.Configuration;
 using Abstractions.Transport;
 
@@ -60,7 +60,7 @@ public sealed class ReportSender : IReportSender
         var rawReport = _mapper.Map<TModel.HealthCheckReport>(report);
         var payload = _serializer.Serialize(rawReport);
 
-        _logger.LogDebug("Payload {payload}", payload);
+        _logger.LogDebug("Payload {Payload}", payload);
 
         var isOk = await _rawSender.SendAsync(payload, _config.Url, ct)
                         .ConfigureAwait(false);
