@@ -1,4 +1,4 @@
-﻿namespace Models;
+namespace Models;
 
 /// <summary>
 /// Report item about resource health check.
@@ -26,7 +26,7 @@ public sealed class HealthCheckReportItem
     {
         ArgumentNullException.ThrowIfNull(resourceName);
 
-        if (!Enum.IsDefined(typeof(ResourceStatus), status))
+        if (!Enum.IsDefined(status))
         {
             throw new ArgumentException("Status is not defined.", nameof(status));
         }
