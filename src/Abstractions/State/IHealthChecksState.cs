@@ -1,4 +1,4 @@
-﻿using Models;
+using Models;
 
 namespace Abstractions.State;
 
@@ -12,11 +12,11 @@ public interface IHealthChecksState
     /// Gets health checks.
     /// </summary>
     /// <value>Health checks.</value>
-    public IReadOnlyCollection<ResourceHealthCheck> HealthChecks { get; }
+    IReadOnlyCollection<ResourceHealthCheck> HealthChecks { get; }
 
     /// <summary>
     /// Builds aggregated health check report about all resources.
     /// </summary>
     /// <returns></returns>
-    public HealthCheckReport BuildReport();
+    HealthCheckReport BuildReport();
 }
