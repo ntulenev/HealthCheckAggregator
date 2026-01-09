@@ -1,4 +1,4 @@
-﻿namespace Abstractions.Logic;
+namespace Abstractions.Logic;
 
 /// <summary>
 /// Processor for health check reports.
@@ -9,5 +9,5 @@ public interface IReportProcessor
     /// Processes health check reports.
     /// </summary>
     /// <param name="ct">Token for cancel the operation.</param>
-    public Task ProcessAsync(CancellationToken ct);
+    Task ProcessAsync(CancellationToken ct);
 }
