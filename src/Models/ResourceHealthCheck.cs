@@ -1,4 +1,4 @@
-﻿namespace Models;
+namespace Models;
 
 /// <summary>
 /// Health check model for resource.
@@ -18,8 +18,7 @@ public sealed class ResourceHealthCheck
     /// <summary>
     /// Health check last update.
     /// </summary>
-    public DateTimeOffset LastUpdate
-    {
+    public DateTimeOffset LastUpdate {
         get
         {
             //Inform the compiler and the runtime that this variable can be used
@@ -50,7 +49,7 @@ public sealed class ResourceHealthCheck
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(requestSettings);
-        
+
         _dateTicks = DateTimeOffset.MinValue.Ticks;
         ResourceName = name;
         ExpirationPeriod = expirationPeriod;
@@ -63,24 +62,19 @@ public sealed class ResourceHealthCheck
     /// <returns>Health check status.</returns>
     public ResourceStatus IsExpired()
     {
-        if (LastUpdate + ExpirationPeriod >= DateTimeOffset.UtcNow)
-        {
-            return ResourceStatus.Healthy;
-        }
-
-        return ResourceStatus.Unhealthy;
+        return (LastUpdate + ExpirationPeriod >= DateTimeOffset.UtcNow)
+            ? ResourceStatus.Healthy
+            : ResourceStatus.Unhealthy;
     }
 
     /// <summary>
     /// Update last update time.
     /// </summary>
-    public void Update()
-    {
+    public void Update() =>
         //Inform the compiler and the runtime that this variable can be used
         //by multiple threads, and this prevents the compiler or the CPU from applying
         //optimizations like caching this variable locally.
         _ = Interlocked.Exchange(ref _dateTicks, DateTimeOffset.UtcNow.Ticks);
-    }
 
     /// <inheritdoc/>
     public override string ToString()
