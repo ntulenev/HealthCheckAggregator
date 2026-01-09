@@ -1,7 +1,9 @@
-﻿using System.Net;
-using System.Text;
+using System.Net;
+
 using Abstractions.Transport;
+
 using Microsoft.Extensions.Logging;
+
 using Moq.Protected;
 
 namespace Transport.Tests;
@@ -62,10 +64,8 @@ public class HttpJsonSenderTests
         using var cts = new CancellationTokenSource();
 
         // Act
-        var exception = await Record.ExceptionAsync(async () =>
-        {
-            await sender.SendAsync(null!, new Uri("http://example.com"), cts.Token);
-        });
+        var exception = await Record.ExceptionAsync(async ()
+            => await sender.SendAsync(null!, new Uri("http://example.com"), cts.Token));
 
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
@@ -82,7 +82,7 @@ public class HttpJsonSenderTests
         using var cts = new CancellationTokenSource();
 
         // Act
-        var exception = await Record.ExceptionAsync(async () => { await sender.SendAsync("data", null!, cts.Token); });
+        var exception = await Record.ExceptionAsync(async () => await sender.SendAsync("data", null!, cts.Token));
 
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
@@ -97,13 +97,11 @@ public class HttpJsonSenderTests
         var logger = new Mock<ILogger<HttpJsonSender>>();
         var sender = new HttpJsonSender(clientProxy.Object, logger.Object);
         using var cts = new CancellationTokenSource();
-        cts.Cancel();
+        await cts.CancelAsync();
 
         // Act
-        var exception = await Record.ExceptionAsync(async () =>
-        {
-            await sender.SendAsync("data", new Uri("http://example.com"), cts.Token);
-        });
+        var exception = await Record.ExceptionAsync(async ()
+            => await sender.SendAsync("data", new Uri("http://example.com"), cts.Token));
 
         // Assert
         exception.Should().BeOfType<OperationCanceledException>();
@@ -121,11 +119,12 @@ public class HttpJsonSenderTests
         var url = new Uri("http://example.com");
         var data = "test";
         var handlerMock = new Mock<HttpMessageHandler>();
+#pragma warning disable CA2000 // Dispose objects before losing scope
         handlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-                "SendAsync", 
+                "SendAsync",
                 ItExpr.Is<HttpRequestMessage>(request =>
-                    request.Method == HttpMethod.Post && 
-                    request.RequestUri!.Equals(url)), 
+                    request.Method == HttpMethod.Post &&
+                    request.RequestUri!.Equals(url)),
                 ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(
                 new HttpResponseMessage
@@ -133,17 +132,18 @@ public class HttpJsonSenderTests
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent("mocked API response")
                 });
+#pragma warning restore CA2000 // Dispose objects before losing scope
         using var httpClient = new HttpClient(handlerMock.Object);
-        clientProxy.Setup(c => 
-                c.SenderClient).Returns(()=>httpClient);
-        
+        clientProxy.Setup(c =>
+                c.SenderClient).Returns(() => httpClient);
+
         // Act
         var result = await sender.SendAsync(data, url, cts.Token);
-        
+
         // Assert
         result.Should().BeTrue();
     }
-    
+
     [Fact(DisplayName = $"{nameof(HttpJsonSender)} returns false on failed sending")]
     [Trait("Category", "Unit")]
     public async Task HttpJsonSenderReturnsFalseOnErrorSending()
@@ -156,11 +156,12 @@ public class HttpJsonSenderTests
         var url = new Uri("http://example.com");
         var data = "test";
         var handlerMock = new Mock<HttpMessageHandler>();
+#pragma warning disable CA2000 // Dispose objects before losing scope
         handlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-                "SendAsync", 
+                "SendAsync",
                 ItExpr.Is<HttpRequestMessage>(request =>
-                    request.Method == HttpMethod.Post && 
-                    request.RequestUri!.Equals(url)), 
+                    request.Method == HttpMethod.Post &&
+                    request.RequestUri!.Equals(url)),
                 ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(
                 new HttpResponseMessage
@@ -168,13 +169,14 @@ public class HttpJsonSenderTests
                     StatusCode = HttpStatusCode.InternalServerError,
                     Content = new StringContent("mocked API response")
                 });
+#pragma warning restore CA2000 // Dispose objects before losing scope
         using var httpClient = new HttpClient(handlerMock.Object);
-        clientProxy.Setup(c => 
-            c.SenderClient).Returns(()=>httpClient);
-        
+        clientProxy.Setup(c =>
+            c.SenderClient).Returns(() => httpClient);
+
         // Act
         var result = await sender.SendAsync(data, url, cts.Token);
-        
+
         // Assert
         result.Should().BeFalse();
     }
