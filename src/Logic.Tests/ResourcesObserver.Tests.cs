@@ -1,4 +1,4 @@
-﻿using Abstractions.Logic;
+using Abstractions.Logic;
 using Abstractions.State;
 using Models;
 
@@ -87,7 +87,7 @@ public class ResourcesObserverTests
             new Mock<Func<ResourceHealthCheck, IResourceCheckerProcessor>>(MockBehavior.Strict);
         var observer = new ResourcesObserver(logger.Object, state.Object, processorFactory.Object);
         using var cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.Cancel();
+        await cancellationTokenSource.CancelAsync();
 
         // Act
         var exception = await Record.ExceptionAsync(async () =>
