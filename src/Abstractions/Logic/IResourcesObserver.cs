@@ -1,4 +1,4 @@
-﻿namespace Abstractions.Logic;
+namespace Abstractions.Logic;
 
 /// <summary>
 /// Observes resources health checks.
@@ -9,5 +9,5 @@ public interface IResourcesObserver
     /// Observes resources health checks.
     /// </summary>
     /// <param name="ct">Token for cancel.</param>
-    public Task ObserveAsync(CancellationToken ct);
+    Task ObserveAsync(CancellationToken ct);
 }
