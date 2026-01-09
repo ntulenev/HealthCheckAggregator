@@ -19,13 +19,13 @@ public class ReportSenderConfigurationValidatorTests
         };
         var validator = new ReportSenderConfigurationValidator();
         // Act
-        
+
         var result = validator.Validate(null!, options);
-        
+
         // Assert
         result.Should().Be(ValidateOptionsResult.Success);
     }
-    
+
     [Fact(DisplayName = $"{nameof(ReportSenderConfigurationValidator)} fails when URL is null")]
     [Trait("Category", "Unit")]
     public void ReportSenderConfigurationValidatorFailsWhenUrlIsNull()
@@ -63,5 +63,5 @@ public class ReportSenderConfigurationValidatorTests
         // Assert
         result.Should().NotBe(ValidateOptionsResult.Success);
     }
-    
+
 }
