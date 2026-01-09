@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 
 namespace Models.Tests;
 
@@ -69,12 +69,12 @@ public class ResourceHealthCheckTests
         var resourceName = new ResourceName("TestResource");
         var expirationPeriod = TimeSpan.FromSeconds(30);
         var requestSettings = new ResourceRequestSettings(
-            new Uri("https://example.com"), 
-            TimeSpan.FromSeconds(15), 
+            new Uri("https://example.com"),
+            TimeSpan.FromSeconds(15),
             TimeSpan.FromSeconds(60));
         var healthCheck = new ResourceHealthCheck(
-                resourceName, 
-                expirationPeriod, 
+                resourceName,
+                expirationPeriod,
                 requestSettings);
 
         // Act
@@ -92,12 +92,12 @@ public class ResourceHealthCheckTests
         var resourceName = new ResourceName("TestResource");
         var expirationPeriod = TimeSpan.FromSeconds(30);
         var requestSettings = new ResourceRequestSettings(
-            new Uri("https://example.com"), 
-            TimeSpan.FromSeconds(15), 
+            new Uri("https://example.com"),
+            TimeSpan.FromSeconds(15),
             TimeSpan.FromSeconds(60));
         var healthCheck = new ResourceHealthCheck(
-                resourceName, 
-                expirationPeriod, 
+                resourceName,
+                expirationPeriod,
                 requestSettings);
         var initialLastUpdate = healthCheck.LastUpdate;
 
@@ -117,12 +117,12 @@ public class ResourceHealthCheckTests
         var resourceName = new ResourceName("TestResource");
         var expirationPeriod = TimeSpan.FromSeconds(300);
         var requestSettings = new ResourceRequestSettings(
-            new Uri("https://example.com"), 
-            TimeSpan.FromSeconds(15), 
+            new Uri("https://example.com"),
+            TimeSpan.FromSeconds(15),
             TimeSpan.FromSeconds(60));
         var healthCheck = new ResourceHealthCheck(
-                resourceName, 
-                expirationPeriod, 
+                resourceName,
+                expirationPeriod,
                 requestSettings);
 
         // Act
