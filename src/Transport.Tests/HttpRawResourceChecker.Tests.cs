@@ -1,5 +1,5 @@
-﻿using System.Net;
-    
+using System.Net;
+
 using Abstractions.Transport;
 using Models;
 
@@ -74,10 +74,8 @@ public class HttpRawResourceCheckerTests
         using var cts = new CancellationTokenSource();
 
         // Act
-        var exception = await Record.ExceptionAsync(async () =>
-        {
-            await checker.CheckAsync(TimeSpan.FromSeconds(10), null!, cts.Token);
-        });
+        var exception = await Record.ExceptionAsync(
+            async () => await checker.CheckAsync(TimeSpan.FromSeconds(10), null!, cts.Token));
 
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
@@ -92,14 +90,14 @@ public class HttpRawResourceCheckerTests
         var logger = new Mock<ILogger<HttpRawResourceChecker>>();
         var checker = new HttpRawResourceChecker(clientProxy.Object, logger.Object);
         using var cts = new CancellationTokenSource();
-        cts.Cancel();
+        await cts.CancelAsync();
 
         // Act
         var exception = await Record.ExceptionAsync(async () =>
         {
             await checker.CheckAsync(
-                TimeSpan.FromSeconds(10), 
-                new Uri("http://example.com"), 
+                TimeSpan.FromSeconds(10),
+                new Uri("http://example.com"),
                 cts.Token);
         });
 
@@ -141,17 +139,19 @@ public class HttpRawResourceCheckerTests
         var timeout = TimeSpan.FromSeconds(10);
         var uri = new Uri("http://example.com");
         var handlerMock = new Mock<HttpMessageHandler>();
+#pragma warning disable CA2000 // Dispose objects before losing scope
         handlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-            "SendAsync", 
+            "SendAsync",
             ItExpr.Is<HttpRequestMessage>(request =>
-                request.Method == HttpMethod.Get && request.RequestUri!.Equals(uri)), 
+                request.Method == HttpMethod.Get && request.RequestUri!.Equals(uri)),
             ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(
                 new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-                Content = new StringContent("mocked API response")
-            });
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent("mocked API response")
+                });
+#pragma warning restore CA2000 // Dispose objects before losing scope
         using var httpClient = new HttpClient(handlerMock.Object)
         {
             Timeout = timeout
@@ -170,7 +170,7 @@ public class HttpRawResourceCheckerTests
         // Assert
         result.Should().Be(ResourceStatus.Healthy);
     }
-    
+
     [Fact(DisplayName = $"{nameof(HttpRawResourceChecker)} can process unhealthy status")]
     [Trait("Category", "Unit")]
     public async Task HttpRawResourceCheckerCanProcessUnHealthyStatus()
@@ -180,10 +180,11 @@ public class HttpRawResourceCheckerTests
         var timeout = TimeSpan.FromSeconds(10);
         var uri = new Uri("http://example.com");
         var handlerMock = new Mock<HttpMessageHandler>();
+#pragma warning disable CA2000 // Dispose objects before losing scope
         handlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-                "SendAsync", 
+                "SendAsync",
                 ItExpr.Is<HttpRequestMessage>(request =>
-                    request.Method == HttpMethod.Get && request.RequestUri!.Equals(uri)), 
+                    request.Method == HttpMethod.Get && request.RequestUri!.Equals(uri)),
                 ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(
                 new HttpResponseMessage
@@ -191,6 +192,7 @@ public class HttpRawResourceCheckerTests
                     StatusCode = HttpStatusCode.InternalServerError,
                     Content = new StringContent("mocked API response")
                 });
+#pragma warning restore CA2000 // Dispose objects before losing scope
         using var httpClient = new HttpClient(handlerMock.Object)
         {
             Timeout = timeout
