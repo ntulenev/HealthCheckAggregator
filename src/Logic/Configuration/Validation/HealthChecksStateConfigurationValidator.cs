@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 
 namespace Logic.Configuration.Validation;
 
@@ -15,6 +15,8 @@ public class HealthChecksStateConfigurationValidator : IValidateOptions<HealthCh
     /// <returns>A <see cref="ValidateOptionsResult"/> indicating success or failure.</returns>
     public ValidateOptionsResult Validate(string? name, HealthChecksStateConfiguration options)
     {
+        ArgumentNullException.ThrowIfNull(options);
+
         if (options.Resources == null || !options.Resources.Any())
         {
             return ValidateOptionsResult.Fail("At least one resource configuration must be provided.");
@@ -70,10 +72,12 @@ public class HealthChecksStateConfigurationValidator : IValidateOptions<HealthCh
             return ValidateOptionsResult.Fail($"Check interval for resource '{resource.Name}' must be positive.");
         }
 
+#pragma warning disable IDE0046 // Convert to conditional expression
         if (resource.Timeout <= TimeSpan.Zero)
         {
             return ValidateOptionsResult.Fail($"Timeout for resource '{resource.Name}' must be positive.");
         }
+#pragma warning restore IDE0046 // Convert to conditional expression
 
         return ValidateOptionsResult.Success;
     }
