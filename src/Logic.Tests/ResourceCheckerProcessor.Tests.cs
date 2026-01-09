@@ -1,4 +1,4 @@
-﻿using Abstractions.Logic;
+using Abstractions.Logic;
 using Models;
 
 using Microsoft.Extensions.Logging;
@@ -49,7 +49,7 @@ public class ResourceCheckerProcessorTests
         var exception = Record.Exception(() =>
             _ = new ResourceCheckerProcessor(null!, resourceChecker.Object,
                 resourceHealthCheck));
-        
+
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
     }
@@ -67,12 +67,12 @@ public class ResourceCheckerProcessorTests
                 new Uri("http://www.example.com"),
                 TimeSpan.FromMicroseconds(1),
                 TimeSpan.FromSeconds(1)));
-        
+
         // Act
         var exception = Record.Exception(() =>
             _ = new ResourceCheckerProcessor(logger.Object, null!,
                 resourceHealthCheck));
-        
+
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
     }
@@ -84,12 +84,12 @@ public class ResourceCheckerProcessorTests
         // Arrange
         var logger = new Mock<ILogger<ResourceCheckerProcessor>>();
         var resourceChecker = new Mock<IResourceChecker>(MockBehavior.Strict);
-        
+
         // Act
         var exception = Record.Exception(() =>
             _ = new ResourceCheckerProcessor(logger.Object, resourceChecker.Object,
                 null!));
-        
+
         // Assert
         exception.Should().BeOfType<ArgumentNullException>();
     }
@@ -109,7 +109,7 @@ public class ResourceCheckerProcessorTests
                 TimeSpan.FromMicroseconds(1),
                 TimeSpan.FromSeconds(1)));
         using var cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.Cancel();
+        await cancellationTokenSource.CancelAsync();
         var processor = new ResourceCheckerProcessor(logger.Object, resourceChecker.Object,
             resourceHealthCheck);
 
@@ -145,14 +145,14 @@ public class ResourceCheckerProcessorTests
                 cancellationTokenSource.Cancel();
                 checkCallCount++;
             });
-        
+
         // Act
         var processor = new ResourceCheckerProcessor(logger.Object, resourceChecker.Object,
             resourceHealthCheck);
         var exception =
             await Record.ExceptionAsync(async () =>
                 await processor.ProcessAsync(cancellationTokenSource.Token));
-        
+
         // Assert
         exception.Should().BeAssignableTo<OperationCanceledException>();
         checkCallCount.Should().Be(1);
